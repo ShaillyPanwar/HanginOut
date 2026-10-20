@@ -59,6 +59,11 @@ public class SecurityConfig {
                                 "/actuator/health",
                                 "/h2-console/**"
                         ).permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET,
+                                "/api/activities",
+                                "/api/activities/categories",
+                                "/api/activities/{id:[0-9]+}"
+                        ).permitAll()
                         // All other APIs require JWT authentication
                         .anyRequest().authenticated()
                 )
