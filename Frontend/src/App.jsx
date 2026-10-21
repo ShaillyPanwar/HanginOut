@@ -8,7 +8,22 @@ import ProfilePage from './pages/ProfilePage';
 import OnboardingPage from './pages/OnboardingPage';
 import DiscoverPage from './pages/DiscoverPage';
 import SavedActivitiesPage from './pages/SavedActivitiesPage';
-import { Sparkles, Users, Compass, Heart, ArrowRight, ShieldCheck, CheckCircle2, User, LogIn, Bookmark } from 'lucide-react';
+import GroupDashboardPage from './pages/GroupDashboardPage';
+import GroupSwipePage from './pages/GroupSwipePage';
+import MatchResultPage from './pages/MatchResultPage';
+import {
+  Sparkles,
+  Users,
+  Compass,
+  Heart,
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle2,
+  User,
+  LogIn,
+  Bookmark,
+  Calendar
+} from 'lucide-react';
 
 function LandingView() {
   const { isAuthenticated, user } = useAuth();
@@ -25,7 +40,7 @@ function LandingView() {
             <div>
               <span className="font-extrabold text-xl tracking-tight text-white">Hangin<span className="text-orange-500">Out</span></span>
               <span className="hidden sm:inline-block ml-2 text-xs text-orange-400/80 font-medium bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
-                Phase 3 Live
+                Phase 4 Live
               </span>
             </div>
           </div>
@@ -45,10 +60,17 @@ function LandingView() {
               <div className="flex items-center gap-2">
                 <Link
                   to="/discover"
+                  className="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition flex items-center gap-1 font-medium"
+                >
+                  <Compass className="w-3.5 h-3.5 text-orange-400" />
+                  <span>Solo Deck</span>
+                </Link>
+                <Link
+                  to="/groups"
                   className="text-xs bg-gradient-to-r from-orange-500 to-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition shadow-md shadow-orange-500/20 flex items-center gap-1"
                 >
-                  <Compass className="w-3.5 h-3.5" />
-                  <span>Swipe Deck</span>
+                  <Users className="w-3.5 h-3.5" />
+                  <span>Squads</span>
                 </Link>
                 <Link
                   to="/saved"
@@ -97,25 +119,26 @@ function LandingView() {
         </h1>
 
         <p className="mt-5 text-slate-400 text-lg sm:text-xl max-w-2xl leading-relaxed">
-          Tired of endless group chat debates? Discover budget-friendly activities in your city, swipe right with your friends, and unlock instant unanimous matches.
+          Tired of endless group chat debates? Create a squad, invite your friends with a 6-character code, swipe together, and unlock instant unanimous matches and scheduled hangout plans.
         </p>
 
         {/* CTA Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
           {isAuthenticated ? (
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
-                to="/discover"
+                to="/groups"
                 className="flex items-center gap-2 py-3 px-6 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 shadow-xl shadow-orange-500/25 transition transform hover:-translate-y-0.5"
               >
-                <Compass className="w-4 h-4" />
-                <span>Launch Swipe Deck</span>
+                <Users className="w-4 h-4" />
+                <span>Squad Swipes & Consensus</span>
               </Link>
               <Link
-                to="/onboarding"
+                to="/discover"
                 className="flex items-center gap-2 py-3 px-5 rounded-xl font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800/80 transition"
               >
-                <span>Edit Preferences</span>
+                <Compass className="w-4 h-4 text-orange-400" />
+                <span>Solo Deck</span>
               </Link>
             </div>
           ) : (
@@ -139,72 +162,68 @@ function LandingView() {
         </div>
 
         {/* Feature Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-14 text-left">
-          <Link to={isAuthenticated ? "/discover" : "/register"} className="block group">
-            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 group-hover:border-orange-500/40 transition-all shadow-xl h-full">
-              <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-4 group-hover:scale-110 transition-transform">
-                <Compass className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Hinge-Style Swipe Discovery</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Clean visual cards with expandable bottom drawers revealing student budget estimates, travel times, and full photo galleries.
-              </p>
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-left">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition">
+            <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-4">
+              <Compass className="w-5 h-5" />
             </div>
-          </Link>
-
-          <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-orange-500/40 transition-all shadow-xl">
-            <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-4">
-              <Users className="w-6 h-6" />
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">Group Consensus Swipes</h3>
+            <h3 className="text-lg font-bold text-white mb-2">Curated Spots Under ₹1000</h3>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Create a group session with an invite code. Every member swipes on their own phone—the algorithm finds places everyone loves.
+              Verified street food alleys, board game cafes, bowling alleys, and cultural spots in your city tailored specifically for student budgets.
             </p>
           </div>
 
-          <Link to={isAuthenticated ? "/saved" : "/register"} className="block group">
-            <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 group-hover:border-orange-500/40 transition-all shadow-xl h-full">
-              <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-4 group-hover:scale-110 transition-transform">
-                <Heart className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">My Saved Hangouts</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Bookmark activities you love, plan weekend getaways, and revisit your personalized favorites at any time.
-              </p>
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4">
+              <Users className="w-5 h-5" />
             </div>
-          </Link>
+            <h3 className="text-lg font-bold text-white mb-2">Collaborative Squad Swiping</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Create a squad with a 6-character code (e.g. HNG7342). All squad members swipe independently to eliminate group chat friction.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-4">
+              <Calendar className="w-5 h-5" />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">Consensus & Scheduling</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Unlock instant unanimous matches (100% agreed), ranked consensus percentages, and lock down planned dates and times.
+            </p>
+          </div>
         </div>
 
-        {/* Phase Verification Status */}
-        <div className="w-full mt-14 p-6 sm:p-8 rounded-2xl bg-slate-900 border border-slate-800/80 text-left">
+        {/* Deliverables Checklist */}
+        <div className="mt-12 w-full p-6 rounded-2xl bg-slate-900/40 border border-slate-800 text-left">
           <div className="flex items-center gap-2 mb-4">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-xl font-bold text-white">Engineering Deliverables (Phase 1, 2 & 3 Completed)</h2>
+            <h2 className="text-xl font-bold text-white">Engineering Deliverables (Phases 1, 2, 3 & 4 Completed)</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div className="flex items-center gap-2 text-slate-300">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Pluggable Rule-Based Recommendation Engine (+30 budget, +25 category, +20 group, +15 duration, +10 location)</span>
+              <span>Squad Creation & Invite Codes (e.g. HNG9342 with creator auto-membership)</span>
             </div>
             <div className="flex items-center gap-2 text-slate-300">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>GET /api/activities/recommended & GET /api/activities</span>
+              <span>Group Voting & Real-Time Consensus Matching (Unanimous 100% & Ranked %)</span>
             </div>
             <div className="flex items-center gap-2 text-slate-300">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>POST /api/swipes & GET /api/swipes/liked (with deduplication)</span>
+              <span>Hangout Plan Scheduling & Itinerary Coordination (Date, Time, Location)</span>
             </div>
             <div className="flex items-center gap-2 text-slate-300">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>GET, POST, DELETE /api/saved (My Hangouts bookmarking)</span>
+              <span>Rule-Based Recommendation Engine & Dual-State Swipe Deck</span>
             </div>
             <div className="flex items-center gap-2 text-slate-300">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Dual-State Expandable Card with Framer Motion swipe gestures</span>
+              <span>Spring Security 6 Stateless JWT Auth & PostgreSQL Compatibility</span>
             </div>
             <div className="flex items-center gap-2 text-slate-300">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>15/15 Automated Integration & Context Tests Passing</span>
+              <span>22/22 Automated Integration & Context Tests Passing (0 failures, 0 errors)</span>
             </div>
           </div>
         </div>
@@ -230,6 +249,9 @@ export default function App() {
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/discover" element={<DiscoverPage />} />
             <Route path="/saved" element={<SavedActivitiesPage />} />
+            <Route path="/groups" element={<GroupDashboardPage />} />
+            <Route path="/groups/:id/swipe" element={<GroupSwipePage />} />
+            <Route path="/groups/:id/matches" element={<MatchResultPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Routes>
