@@ -24,7 +24,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     @Query("SELECT a FROM Activity a " +
             "LEFT JOIN FETCH a.category " +
             "WHERE a.isActive = true " +
-            "AND (:city IS NULL OR LOWER(a.city) = LOWER(:city)) " +
+            "AND (LOWER(a.city) = LOWER(:city) OR :city IS NULL) " +
             "AND (:categoryId IS NULL OR a.category.id = :categoryId) " +
             "AND (:maxBudget IS NULL OR a.minCost <= :maxBudget) " +
             "AND (:groupType IS NULL OR a.groupType = :groupType OR a.groupType = 'Both')")
@@ -38,7 +38,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     @Query("SELECT a FROM Activity a " +
             "JOIN FETCH a.category " +
             "WHERE a.isActive = true " +
-            "AND (:city IS NULL OR LOWER(a.city) = LOWER(:city)) " +
+            "AND (LOWER(a.city) = LOWER(:city) OR :city IS NULL) " +
             "AND a.id NOT IN :excludedIds")
     List<Activity> findActiveForRecommendation(
             @Param("city") String city,

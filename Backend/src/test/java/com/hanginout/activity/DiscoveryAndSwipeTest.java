@@ -76,6 +76,31 @@ class DiscoveryAndSwipeTest {
 
     @Test
     @Order(2)
+    void shouldDiscoverActivitiesWithPaginationAndNullFilters() throws Exception {
+        mockMvc.perform(get("/api/activities?size=20"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(200))
+                .andExpect(jsonPath("$.data.content", hasSize(greaterThanOrEqualTo(1))));
+    }
+
+    @Test
+    @Order(3)
+    void shouldFilterActivitiesByCityCaseInsensitive() throws Exception {
+        mockMvc.perform(get("/api/activities?city=delhi&size=20"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(200))
+                .andExpect(jsonPath("$.data.content", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$.data.content[0].city").value(equalToIgnoringCase("Delhi")));
+
+        mockMvc.perform(get("/api/activities?city=DELHI&size=20"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(200))
+                .andExpect(jsonPath("$.data.content", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$.data.content[0].city").value(equalToIgnoringCase("Delhi")));
+    }
+
+    @Test
+    @Order(4)
     void shouldUpdateAndRetrieveUserPreferences() throws Exception {
         UpdatePreferenceRequest request = new UpdatePreferenceRequest(
                 "Under ₹300",
@@ -102,7 +127,7 @@ class DiscoveryAndSwipeTest {
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     void shouldFetchRecommendedActivitiesRankedByRelevance() throws Exception {
         mockMvc.perform(get("/api/activities/recommended")
                         .header("Authorization", "Bearer " + jwtToken))
@@ -114,7 +139,7 @@ class DiscoveryAndSwipeTest {
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     void shouldFetchActivityDetailsWithGalleryAndSpots() throws Exception {
         mockMvc.perform(get("/api/activities/1"))
                 .andExpect(status().isOk())
@@ -125,7 +150,7 @@ class DiscoveryAndSwipeTest {
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     void shouldRecordSwipeAndExcludeFromFutureRecommendations() throws Exception {
         SwipeRequest swipe = new SwipeRequest(1L, "LIKE");
 
@@ -146,7 +171,7 @@ class DiscoveryAndSwipeTest {
     }
 
     @Test
-    @Order(6)
+    @Order(8)
     void shouldSaveAndRetrieveSavedActivities() throws Exception {
         mockMvc.perform(post("/api/saved/2")
                         .header("Authorization", "Bearer " + jwtToken))

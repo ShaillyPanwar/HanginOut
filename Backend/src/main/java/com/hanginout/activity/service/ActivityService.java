@@ -35,7 +35,9 @@ public class ActivityService {
     @Transactional(readOnly = true)
     public Page<ActivityCardDTO> getFilteredActivities(
             String city, Long categoryId, BigDecimal maxBudget, String groupType, Pageable pageable) {
-        Page<Activity> page = activityRepository.findFilteredActivities(city, categoryId, maxBudget, groupType, pageable);
+        String trimmedCity = (city != null && !city.trim().isEmpty()) ? city.trim() : null;
+        String trimmedGroupType = (groupType != null && !groupType.trim().isEmpty()) ? groupType.trim() : null;
+        Page<Activity> page = activityRepository.findFilteredActivities(trimmedCity, categoryId, maxBudget, trimmedGroupType, pageable);
         return page.map(ActivityCardDTO::fromEntity);
     }
 
