@@ -43,17 +43,28 @@ public class AuthService {
             throw new DuplicateResourceException("An account with email " + normalizedEmail + " already exists");
         }
 
+        if (request.getDateOfBirth() == null) {
+            throw new BadRequestException("Date of birth is mandatory.");
+        }
+        if (request.getDateOfBirth().isAfter(java.time.LocalDate.now())) {
+            throw new BadRequestException("Date of birth cannot be in the future.");
+        }
+        int calculatedAge = java.time.Period.between(request.getDateOfBirth(), java.time.LocalDate.now()).getYears();
+        if (calculatedAge < 13) {
+            throw new BadRequestException("You must be at least 13 years old to register.");
+        }
+
         User user = new User(
                 normalizedEmail,
                 passwordEncoder.encode(request.getPassword()),
                 request.getName().trim(),
-                request.getAge(),
+                request.getDateOfBirth(),
                 request.getCity() != null ? request.getCity().trim() : null,
                 "ROLE_USER"
         );
 
         User savedUser = userRepository.save(user);
-        String token = jwtTokenProvider.generateToken(savedUser.getEmail(), savedUser.getId(), savedUser.getName());
+        String token = jwtTokenProvider.generateToken(savedUser.getEmail(), savedUser.getId(), savedUser.getName(), savedUser.getRole());
 
         return new AuthResponse(token, UserDTO.fromEntity(savedUser));
     }

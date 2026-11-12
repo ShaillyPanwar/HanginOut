@@ -65,6 +65,13 @@ public class GroupMatchingService {
             throw new BadRequestException("Activity is inactive.");
         }
 
+        if (activity.getMinAge() != null && activity.getMinAge() > 0) {
+            Integer userAge = user.getAge();
+            if (userAge != null && userAge < activity.getMinAge()) {
+                throw new BadRequestException("This activity requires a minimum age of " + activity.getMinAge() + " years.");
+            }
+        }
+
         String normalizedAction = request.getAction().trim().toUpperCase();
 
         // Idempotent UPSERT: update vote if member votes again

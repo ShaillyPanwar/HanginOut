@@ -1,15 +1,18 @@
 package com.hanginout.user.dto;
 
 import com.hanginout.user.entity.User;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class UserDTO {
     private Long id;
     private String email;
     private String name;
+    private LocalDate dateOfBirth;
     private Integer age;
     private String city;
     private String role;
+    private boolean requiresDobCompletion;
     private LocalDateTime createdAt;
 
     public UserDTO() {}
@@ -25,15 +28,17 @@ public class UserDTO {
     }
 
     public static UserDTO fromEntity(User user) {
-        return new UserDTO(
-                user.getId(),
-                user.getEmail(),
-                user.getName(),
-                user.getAge(),
-                user.getCity(),
-                user.getRole(),
-                user.getCreatedAt()
-        );
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setName(user.getName());
+        dto.setDateOfBirth(user.getDateOfBirth());
+        dto.setAge(user.getAge());
+        dto.setCity(user.getCity());
+        dto.setRole(user.getRole());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setRequiresDobCompletion(user.getDateOfBirth() == null);
+        return dto;
     }
 
     public Long getId() {
@@ -58,6 +63,22 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean isRequiresDobCompletion() {
+        return requiresDobCompletion;
+    }
+
+    public void setRequiresDobCompletion(boolean requiresDobCompletion) {
+        this.requiresDobCompletion = requiresDobCompletion;
     }
 
     public Integer getAge() {

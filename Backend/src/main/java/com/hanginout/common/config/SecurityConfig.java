@@ -22,6 +22,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class SecurityConfig {
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthFilter,
             CustomUserDetailsService userDetailsService,
-            @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:3000}") String allowedOrigins) {
+            @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:5174}") String allowedOrigins) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.userDetailsService = userDetailsService;
         this.allowedOrigins = allowedOrigins;
@@ -50,6 +51,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Explicitly permit all OPTIONS preflight requests
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         // Public Endpoints
                         .requestMatchers(
                                 "/api/auth/**",
@@ -57,15 +60,35 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/actuator/health",
-                                "/h2-console/**"
+                                "/h2-console/**",
+                                "/uploads/**"
                         ).permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET,
                                 "/api/activities",
                                 "/api/activities/categories",
-                                "/api/activities/{id:[0-9]+}"
+                                "/api/activities/{id:[0-9]+}",
+                                "/api/activities/{activityId:[0-9]+}/feedback/summary"
                         ).permitAll()
+                        // Admin APIs strictly restricted to administrators
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // All other APIs require JWT authentication
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN);
+                            response.getWriter().write("""
+                                    {"timestamp":"%s","status":403,"message":"Access denied: full authentication is required.","path":"%s"}
+                                    """.formatted(java.time.LocalDateTime.now(), request.getRequestURI()));
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN);
+                            response.getWriter().write("""
+                                    {"timestamp":"%s","status":403,"message":"Access denied: insufficient permissions.","path":"%s"}
+                                    """.formatted(java.time.LocalDateTime.now(), request.getRequestURI()));
+                        })
                 )
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin())) // For H2 console in dev
                 .authenticationProvider(authenticationProvider())
@@ -95,12 +118,22 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        List<String> origins = Arrays.stream(allowedOrigins.split(","))
+        List<String> explicitOrigins = Arrays.stream(allowedOrigins.split(","))
                 .map(String::trim)
+                .filter(s -> !s.isEmpty())
                 .toList();
-        configuration.setAllowedOrigins(origins);
+
+        List<String> originPatterns = new ArrayList<>(explicitOrigins);
+        // Safely support any local dev server port (e.g., Vite 5173, 5174, 5175, React 3000)
+        originPatterns.add("http://localhost:[*]");
+        originPatterns.add("http://127.0.0.1:[*]");
+        originPatterns.add("http://localhost:*");
+        originPatterns.add("http://127.0.0.1:*");
+
+        configuration.setAllowedOriginPatterns(originPatterns);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "X-Requested-With"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Link", "X-Total-Count"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 

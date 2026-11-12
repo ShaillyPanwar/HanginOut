@@ -26,6 +26,10 @@ public class Spot {
     @Column(nullable = false)
     private String city;
 
+    private String zone;
+
+    private String locality;
+
     private Double latitude;
 
     private Double longitude;
@@ -41,6 +45,9 @@ public class Spot {
 
     @Column(name = "cover_image_url")
     private String coverImageUrl;
+
+    @Column(name = "min_age", nullable = false)
+    private Integer minAge = 0;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
@@ -180,5 +187,29 @@ public class Spot {
 
     public void setImages(List<SpotImage> images) {
         this.images = images;
+    }
+
+    public Integer getMinAge() {
+        return minAge != null ? minAge : 0;
+    }
+
+    public void setMinAge(Integer minAge) {
+        this.minAge = minAge != null ? minAge : 0;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
     }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import AdminRoute from './components/common/AdminRoute';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
@@ -11,14 +12,14 @@ import SavedActivitiesPage from './pages/SavedActivitiesPage';
 import GroupDashboardPage from './pages/GroupDashboardPage';
 import GroupSwipePage from './pages/GroupSwipePage';
 import MatchResultPage from './pages/MatchResultPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 import {
   Sparkles,
   Users,
   Compass,
   Heart,
   ArrowRight,
-  ShieldCheck,
-  CheckCircle2,
+  Shield,
   User,
   LogIn,
   Bookmark,
@@ -39,25 +40,22 @@ function LandingView() {
             </div>
             <div>
               <span className="font-extrabold text-xl tracking-tight text-white">Hangin<span className="text-orange-500">Out</span></span>
-              <span className="hidden sm:inline-block ml-2 text-xs text-orange-400/80 font-medium bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
-                Phase 4 Live
-              </span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <a
-              href="http://localhost:8080/swagger-ui.html"
-              target="_blank"
-              rel="noreferrer"
-              className="text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-medium"
-            >
-              <span>Swagger APIs</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
+                {user?.role === 'ROLE_ADMIN' && (
+                  <Link
+                    to="/admin"
+                    className="text-xs bg-purple-600/20 border border-purple-500/40 text-purple-300 hover:bg-purple-600/30 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md shadow-purple-500/10"
+                    title="System Administration Console"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Admin</span>
+                  </Link>
+                )}
                 <Link
                   to="/discover"
                   className="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition flex items-center gap-1 font-medium"
@@ -70,7 +68,7 @@ function LandingView() {
                   className="text-xs bg-gradient-to-r from-orange-500 to-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition shadow-md shadow-orange-500/20 flex items-center gap-1"
                 >
                   <Users className="w-3.5 h-3.5" />
-                  <span>Squads</span>
+                  <span>Groups</span>
                 </Link>
                 <Link
                   to="/saved"
@@ -119,7 +117,7 @@ function LandingView() {
         </h1>
 
         <p className="mt-5 text-slate-400 text-lg sm:text-xl max-w-2xl leading-relaxed">
-          Tired of endless group chat debates? Create a squad, invite your friends with a 6-character code, swipe together, and unlock instant unanimous matches and scheduled hangout plans.
+          Tired of endless group chat debates? Create a group, invite your friends with an invite code, swipe together, and unlock instant unanimous matches and scheduled hangout plans.
         </p>
 
         {/* CTA Buttons */}
@@ -131,7 +129,7 @@ function LandingView() {
                 className="flex items-center gap-2 py-3 px-6 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 shadow-xl shadow-orange-500/25 transition transform hover:-translate-y-0.5"
               >
                 <Users className="w-4 h-4" />
-                <span>Squad Swipes & Consensus</span>
+                <span>Group Swipes & Consensus</span>
               </Link>
               <Link
                 to="/discover"
@@ -177,9 +175,9 @@ function LandingView() {
             <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4">
               <Users className="w-5 h-5" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">Collaborative Squad Swiping</h3>
+            <h3 className="text-lg font-bold text-white mb-2">Collaborative Group Swiping</h3>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Create a squad with a 6-character code (e.g. HNG7342). All squad members swipe independently to eliminate group chat friction.
+              Create a group with an invite code. All group members swipe independently to eliminate group chat friction.
             </p>
           </div>
 
@@ -193,45 +191,11 @@ function LandingView() {
             </p>
           </div>
         </div>
-
-        {/* Deliverables Checklist */}
-        <div className="mt-12 w-full p-6 rounded-2xl bg-slate-900/40 border border-slate-800 text-left">
-          <div className="flex items-center gap-2 mb-4">
-            <ShieldCheck className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-xl font-bold text-white">Engineering Deliverables (Phases 1, 2, 3 & 4 Completed)</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-            <div className="flex items-center gap-2 text-slate-300">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Squad Creation & Invite Codes (e.g. HNG9342 with creator auto-membership)</span>
-            </div>
-            <div className="flex items-center gap-2 text-slate-300">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Group Voting & Real-Time Consensus Matching (Unanimous 100% & Ranked %)</span>
-            </div>
-            <div className="flex items-center gap-2 text-slate-300">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Hangout Plan Scheduling & Itinerary Coordination (Date, Time, Location)</span>
-            </div>
-            <div className="flex items-center gap-2 text-slate-300">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Rule-Based Recommendation Engine & Dual-State Swipe Deck</span>
-            </div>
-            <div className="flex items-center gap-2 text-slate-300">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Spring Security 6 Stateless JWT Auth & PostgreSQL Compatibility</span>
-            </div>
-            <div className="flex items-center gap-2 text-slate-300">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>22/22 Automated Integration & Context Tests Passing (0 failures, 0 errors)</span>
-            </div>
-          </div>
-        </div>
       </main>
 
       {/* Footer */}
       <footer className="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-        <p>HanginOut Platform © 2026 — JIMS MCA Capstone Engineering Project.</p>
+        <p>HanginOut © 2026. All rights reserved.</p>
       </footer>
     </div>
   );
@@ -253,6 +217,9 @@ export default function App() {
             <Route path="/groups/:id/swipe" element={<GroupSwipePage />} />
             <Route path="/groups/:id/matches" element={<MatchResultPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+          </Route>
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminDashboardPage />} />
           </Route>
         </Routes>
       </AuthProvider>

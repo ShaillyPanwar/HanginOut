@@ -17,7 +17,17 @@ public class ActivityCardDTO {
     private String groupType;
     private String coverImageUrl;
     private String city;
+    private String zone;
+    private String locality;
+    private String areaFormatted;
+    private Double latitude;
+    private Double longitude;
+    private Double distanceKm;
+    private String distanceFormatted;
+    private Integer minAge;
     private Integer score; // Recommendation relevance score
+    private Double averageRating;
+    private Long reviewCount;
 
     public ActivityCardDTO() {}
 
@@ -37,6 +47,20 @@ public class ActivityCardDTO {
         dto.setGroupType(activity.getGroupType());
         dto.setCoverImageUrl(activity.getCoverImageUrl());
         dto.setCity(activity.getCity());
+        dto.setZone(activity.getZone());
+        dto.setLocality(activity.getLocality());
+        if (activity.getLocality() != null && activity.getZone() != null) {
+            dto.setAreaFormatted(activity.getLocality() + " · " + activity.getZone());
+        } else if (activity.getLocality() != null) {
+            dto.setAreaFormatted(activity.getLocality());
+        } else if (activity.getZone() != null) {
+            dto.setAreaFormatted(activity.getZone());
+        } else if (activity.getCity() != null) {
+            dto.setAreaFormatted(activity.getCity());
+        }
+        dto.setLatitude(activity.getLatitude());
+        dto.setLongitude(activity.getLongitude());
+        dto.setMinAge(activity.getMinAge());
         return dto;
     }
 
@@ -142,11 +166,91 @@ public class ActivityCardDTO {
         this.city = city;
     }
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getDistanceKm() {
+        return distanceKm;
+    }
+
+    public void setDistanceKm(Double distanceKm) {
+        this.distanceKm = distanceKm;
+    }
+
+    public String getDistanceFormatted() {
+        return distanceFormatted;
+    }
+
+    public void setDistanceFormatted(String distanceFormatted) {
+        this.distanceFormatted = distanceFormatted;
+    }
+
+    public Integer getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(Integer minAge) {
+        this.minAge = minAge;
+    }
+
     public Integer getScore() {
         return score;
     }
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Long getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Long reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
+    }
+
+    public String getAreaFormatted() {
+        return areaFormatted;
+    }
+
+    public void setAreaFormatted(String areaFormatted) {
+        this.areaFormatted = areaFormatted;
     }
 }

@@ -48,9 +48,16 @@ public class Activity {
     @Column(nullable = false)
     private String city;
 
+    private String zone;
+
+    private String locality;
+
     private Double latitude;
 
     private Double longitude;
+
+    @Column(name = "min_age", nullable = false)
+    private Integer minAge = 0;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
@@ -251,5 +258,29 @@ public class Activity {
 
     public void setSpots(List<Spot> spots) {
         this.spots = spots;
+    }
+
+    public Integer getMinAge() {
+        return minAge != null ? minAge : 0;
+    }
+
+    public void setMinAge(Integer minAge) {
+        this.minAge = minAge != null ? minAge : 0;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
     }
 }

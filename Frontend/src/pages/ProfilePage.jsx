@@ -8,7 +8,7 @@ export default function ProfilePage() {
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
-    age: user?.age || '',
+    dateOfBirth: user?.dateOfBirth || '',
     city: user?.city || 'Delhi',
   });
 
@@ -24,12 +24,23 @@ export default function ProfilePage() {
     e.preventDefault();
     setSuccessMsg('');
     setErrorMsg('');
+
+    if (formData.dateOfBirth) {
+      const birthDate = new Date(formData.dateOfBirth);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (birthDate >= today) {
+        setErrorMsg('Date of birth must be a past date. You cannot be born today or in the future.');
+        return;
+      }
+    }
+
     setSaving(true);
 
     try {
       await updateProfile({
         name: formData.name,
-        age: formData.age ? parseInt(formData.age, 10) : null,
+        dateOfBirth: formData.dateOfBirth || null,
         city: formData.city,
       });
       setSuccessMsg('Profile updated successfully!');
@@ -150,18 +161,24 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  Age
+                <label className="block text-sm font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+                  <span>Date of Birth *</span>
+                  {user?.age != null && (
+                    <span className="text-xs text-orange-400 font-semibold">{user.age} years old</span>
+                  )}
                 </label>
                 <input
-                  type="number"
-                  name="age"
-                  min="13"
-                  max="120"
-                  value={formData.age}
+                  type="date"
+                  name="dateOfBirth"
+                  required
+                  max={new Date().toISOString().split('T')[0]}
+                  value={formData.dateOfBirth}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
                 />
+                {!formData.dateOfBirth && (
+                  <p className="text-xs text-amber-400 mt-1">Date of birth is required to unlock personalized recommendations.</p>
+                )}
               </div>
 
               <div>
@@ -175,6 +192,7 @@ export default function ProfilePage() {
                   className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
                 >
                   <option value="Delhi">Delhi NCR</option>
+                  <option value="Rohini, Delhi">Rohini, Delhi</option>
                   <option value="Noida">Noida</option>
                   <option value="Gurugram">Gurugram</option>
                   <option value="Mumbai">Mumbai</option>

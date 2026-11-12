@@ -44,7 +44,7 @@ class AuthControllerTest {
                 "Aarav Sharma",
                 "aarav@student.edu",
                 "secret123",
-                21,
+                java.time.LocalDate.now().minusYears(21),
                 "Delhi"
         );
 
@@ -70,7 +70,7 @@ class AuthControllerTest {
                 "Aarav Clone",
                 "aarav@student.edu",
                 "password999",
-                22,
+                java.time.LocalDate.now().minusYears(22),
                 "Delhi"
         );
 
@@ -89,7 +89,7 @@ class AuthControllerTest {
                 "", // Blank name
                 "not-an-email",
                 "123", // Short password < 6 chars
-                null,
+                (java.time.LocalDate) null,
                 null
         );
 
@@ -163,5 +163,165 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.data.name").value("Aarav S."))
                 .andExpect(jsonPath("$.data.age").value(22))
                 .andExpect(jsonPath("$.data.city").value("Noida"));
+    }
+
+    @Test
+    @Order(9)
+    void shouldRegisterTeenUserWithFlexibleDateFormatSuccessfully() throws Exception {
+        // Rohit born 08-06-2010 (DD-MM-YYYY format, age 16)
+        String payload = """
+                {
+                    "name": "Rohit",
+                    "email": "rohit.teen@gmail.com",
+                    "password": "validpassword123",
+                    "dateOfBirth": "08-06-2010",
+                    "city": "Delhi NCR"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.status").value(201))
+                .andExpect(jsonPath("$.data.token").isNotEmpty())
+                .andExpect(jsonPath("$.data.user.email").value("rohit.teen@gmail.com"))
+                .andExpect(jsonPath("$.data.user.name").value("Rohit"))
+                .andExpect(jsonPath("$.data.user.age").value(16))
+                .andExpect(jsonPath("$.data.user.dateOfBirth").value("2010-06-08"));
+    }
+
+    @Test
+    @Order(10)
+    void shouldRegisterUserWithIsoDateFormatSuccessfully() throws Exception {
+        String payload = """
+                {
+                    "name": "Rohit ISO",
+                    "email": "rohit.iso@gmail.com",
+                    "password": "validpassword123",
+                    "dateOfBirth": "2010-06-08",
+                    "city": "Delhi NCR"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.status").value(201))
+                .andExpect(jsonPath("$.data.user.email").value("rohit.iso@gmail.com"))
+                .andExpect(jsonPath("$.data.user.age").value(16));
+    }
+
+    @Test
+    @Order(11)
+    void shouldRejectRegistrationUnder13YearsOld() throws Exception {
+        // Child born 5 years ago (under 13)
+        java.time.LocalDate childDob = java.time.LocalDate.now().minusYears(5);
+        String payload = String.format("""
+                {
+                    "name": "Child User",
+                    "email": "child@student.edu",
+                    "password": "validpassword123",
+                    "dateOfBirth": "%s",
+                    "city": "Delhi"
+                }
+                """, childDob);
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message", containsString("at least 13 years old")));
+    }
+
+    @Test
+    @Order(12)
+    void shouldRejectRegistrationWithFutureDate() throws Exception {
+        java.time.LocalDate futureDob = java.time.LocalDate.now().plusDays(2);
+        String payload = String.format("""
+                {
+                    "name": "Future User",
+                    "email": "future@student.edu",
+                    "password": "validpassword123",
+                    "dateOfBirth": "%s",
+                    "city": "Delhi"
+                }
+                """, futureDob);
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400));
+    }
+
+    @Test
+    @Order(13)
+    void shouldRejectRegistrationWithMalformedDate() throws Exception {
+        String payload = """
+                {
+                    "name": "Malformed Date User",
+                    "email": "malformed.date@student.edu",
+                    "password": "validpassword123",
+                    "dateOfBirth": "not-a-valid-date",
+                    "city": "Delhi"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message", containsString("Invalid date of birth format")));
+    }
+
+    @Test
+    @Order(14)
+    void shouldRejectRegistrationWithMissingDob() throws Exception {
+        String payload = """
+                {
+                    "name": "No DOB User",
+                    "email": "nodob@student.edu",
+                    "password": "validpassword123",
+                    "city": "Delhi"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.errors.dateOfBirth").exists());
+    }
+
+    @Test
+    @Order(15)
+    void shouldAllowCorsPreflightFromAnyLocalhostPort() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options("/api/auth/login")
+                        .header("Origin", "http://localhost:5174")
+                        .header("Access-Control-Request-Method", "POST")
+                        .header("Access-Control-Request-Headers", "Content-Type"))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header()
+                        .string("Access-Control-Allow-Origin", "http://localhost:5174"));
+    }
+
+    @Test
+    @Order(16)
+    void shouldAllowCorsPostFromLocalhost5174() throws Exception {
+        LoginRequest request = new LoginRequest("aarav@student.edu", "secret123");
+
+        mockMvc.perform(post("/api/auth/login")
+                        .header("Origin", "http://localhost:5174")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(200))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header()
+                        .string("Access-Control-Allow-Origin", "http://localhost:5174"));
     }
 }

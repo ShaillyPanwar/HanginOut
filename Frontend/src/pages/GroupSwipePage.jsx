@@ -174,7 +174,7 @@ export default function GroupSwipePage() {
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
-                100% Squad Consensus!
+                100% Group Consensus!
               </h2>
               <p className="text-xs text-slate-400 mb-6">
                 Every single member in <span className="text-orange-400 font-semibold">{group?.name}</span> swiped right on this activity!

@@ -102,7 +102,7 @@ export default function GroupDashboardPage() {
               className="text-xs font-bold px-3.5 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 text-slate-950 hover:from-orange-600 hover:to-amber-500 transition shadow shadow-orange-500/20 flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4 stroke-[3]" />
-              <span>New Squad</span>
+              <span>New Group</span>
             </button>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function GroupDashboardPage() {
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Hangout Squads</h1>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Hangout Groups</h1>
             <p className="text-sm text-slate-400 mt-1">
               Collaborative swiping sessions where everyone votes and unanimous matches win.
             </p>
@@ -122,7 +122,7 @@ export default function GroupDashboardPage() {
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center text-slate-400">
             <Loader2 className="w-8 h-8 animate-spin text-orange-500 mb-3" />
-            <p className="text-sm font-medium">Loading your squads...</p>
+            <p className="text-sm font-medium">Loading your groups...</p>
           </div>
         ) : groups.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -188,7 +188,7 @@ export default function GroupDashboardPage() {
                   </div>
                 </div>
 
-                {/* Squad Action Buttons */}
+                {/* Group Action Buttons */}
                 <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-800">
                   <Link
                     to={`/groups/${group.id}/swipe`}
@@ -214,9 +214,9 @@ export default function GroupDashboardPage() {
             <div className="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">No Squads Yet</h3>
+            <h3 className="text-xl font-bold text-white mb-2">No Groups Yet</h3>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
-              Create a group and share the 7-character invite code with your friends to start collaborative swiping.
+              Create a group and share the invite code with your friends to start collaborative swiping.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
@@ -224,7 +224,7 @@ export default function GroupDashboardPage() {
                 className="py-3 px-5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 text-sm flex items-center justify-center gap-2"
               >
                 <Plus className="w-4 h-4" />
-                <span>Create Squad</span>
+                <span>Create Group</span>
               </button>
               <button
                 onClick={() => { setModalError(''); setShowJoinModal(true); }}
@@ -242,7 +242,7 @@ export default function GroupDashboardPage() {
           <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl animate-fade-in">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-white">Create Hangout Squad</h3>
+                <h3 className="text-xl font-bold text-white">Create Hangout Group</h3>
                 <button
                   onClick={() => setShowCreateModal(false)}
                   className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-slate-800"
@@ -260,7 +260,7 @@ export default function GroupDashboardPage() {
               <form onSubmit={handleCreateGroup} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-                    Squad Name
+                    Group Name
                   </label>
                   <input
                     type="text"
@@ -289,7 +289,7 @@ export default function GroupDashboardPage() {
           <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl animate-fade-in">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-white">Join Friend's Squad</h3>
+                <h3 className="text-xl font-bold text-white">Join Friend's Group</h3>
                 <button
                   onClick={() => setShowJoinModal(false)}
                   className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-slate-800"
@@ -325,7 +325,7 @@ export default function GroupDashboardPage() {
                   disabled={modalLoading}
                   className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 disabled:opacity-50 text-sm flex items-center justify-center gap-2"
                 >
-                  {modalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Join Squad</span>}
+                  {modalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Join Group</span>}
                 </button>
               </form>
             </div>

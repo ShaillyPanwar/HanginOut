@@ -41,17 +41,23 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMs);
 
+        String role = principal.getAuthorities().stream()
+                .findFirst()
+                .map(org.springframework.security.core.GrantedAuthority::getAuthority)
+                .orElse("ROLE_USER");
+
         return Jwts.builder()
                 .subject(principal.getUsername())
                 .claim("userId", principal.getId())
                 .claim("name", principal.getName())
+                .claim("role", role)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(key)
                 .compact();
     }
 
-    public String generateToken(String email, Long userId, String name) {
+    public String generateToken(String email, Long userId, String name, String role) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMs);
 
@@ -59,10 +65,19 @@ public class JwtTokenProvider {
                 .subject(email)
                 .claim("userId", userId)
                 .claim("name", name)
+                .claim("role", (role != null) ? role : "ROLE_USER")
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(key)
                 .compact();
+    }
+
+    public String generateToken(String email, Long userId, String name) {
+        return generateToken(email, userId, name, "ROLE_USER");
+    }
+
+    public String generateToken(String email, String role) {
+        return generateToken(email, null, email, role);
     }
 
     public String getUsernameFromToken(String token) {
@@ -72,6 +87,15 @@ public class JwtTokenProvider {
                 .parseSignedClaims(token)
                 .getPayload();
         return claims.getSubject();
+    }
+
+    public String getRoleFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.get("role", String.class);
     }
 
     public Long getUserIdFromToken(String token) {

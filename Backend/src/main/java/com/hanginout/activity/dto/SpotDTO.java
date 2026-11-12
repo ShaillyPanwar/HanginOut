@@ -13,6 +13,8 @@ public class SpotDTO {
     private String description;
     private String address;
     private String city;
+    private String zone;
+    private String locality;
     private Double latitude;
     private Double longitude;
     private BigDecimal minCost;
@@ -30,6 +32,8 @@ public class SpotDTO {
         dto.setDescription(spot.getDescription());
         dto.setAddress(spot.getAddress());
         dto.setCity(spot.getCity());
+        dto.setZone(spot.getZone());
+        dto.setLocality(spot.getLocality());
         dto.setLatitude(spot.getLatitude());
         dto.setLongitude(spot.getLongitude());
         dto.setMinCost(spot.getMinCost());
@@ -137,5 +141,21 @@ public class SpotDTO {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
     }
 }

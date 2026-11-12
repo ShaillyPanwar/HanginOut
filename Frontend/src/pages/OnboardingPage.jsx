@@ -5,11 +5,10 @@ import { activityService } from '../services/activityService';
 import { Sparkles, ArrowRight, ArrowLeft, Check, IndianRupee, Clock, Users, Compass, Loader2 } from 'lucide-react';
 
 const BUDGET_OPTIONS = [
-  { label: 'Free', sub: '₹0 budget hangouts', value: 'Free' },
-  { label: 'Under ₹100', sub: 'Chai, snacks & park strolls', value: 'Under ₹100' },
-  { label: 'Under ₹300', sub: 'Street food & museum tickets', value: 'Under ₹300' },
-  { label: 'Under ₹500', sub: 'Cafes & bowling sessions', value: 'Under ₹500' },
-  { label: '₹500+', sub: 'Go-karting & weekend splurges', value: '₹500+' },
+  { label: 'Under ₹100', sub: '₹0–₹99', value: 'Under ₹100' },
+  { label: 'Under ₹300', sub: '₹100–₹299', value: 'Under ₹300' },
+  { label: 'Under ₹500', sub: '₹300–₹499', value: 'Under ₹500' },
+  { label: 'Above ₹500', sub: '₹500+', value: 'Above ₹500' },
 ];
 
 const DURATION_OPTIONS = [

@@ -53,7 +53,7 @@ class DiscoveryAndSwipeTest {
                 jwtToken = objectMapper.readTree(body).path("data").path("token").asText();
             } else {
                 // Register freshly
-                String regPayload = "{\"name\":\"Test Student\",\"email\":\"test.student@univ.edu\",\"password\":\"pass1234\",\"age\":20,\"city\":\"Delhi\"}";
+                String regPayload = "{\"name\":\"Test Student\",\"email\":\"test.student@univ.edu\",\"password\":\"pass1234\",\"dateOfBirth\":\"2004-05-15\",\"city\":\"Delhi\"}";
                 MvcResult regRes = mockMvc.perform(post("/api/auth/register")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(regPayload))
@@ -189,5 +189,55 @@ class DiscoveryAndSwipeTest {
         mockMvc.perform(delete("/api/saved/2")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(9)
+    void shouldFilterRecommendationsByDistanceAndCoordinates() throws Exception {
+        mockMvc.perform(get("/api/activities/recommended?latitude=28.7180&longitude=77.1130&maxDistanceKm=5")
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(200))
+                .andExpect(jsonPath("$.data", hasSize(greaterThan(0))))
+                .andExpect(jsonPath("$.data[0].distanceKm").isNumber())
+                .andExpect(jsonPath("$.data[0].distanceFormatted").exists());
+    }
+
+    @Test
+    @Order(10)
+    void shouldEnforceAgeRestrictionsForTeenUser() throws Exception {
+        // Register Rohit (16-year-old teen)
+        String regPayload = """
+                {
+                    "name": "Rohit Teen Test",
+                    "email": "rohit.teen.test@gmail.com",
+                    "password": "validpassword123",
+                    "dateOfBirth": "08-06-2010",
+                    "city": "Rohini, Delhi"
+                }
+                """;
+
+        MvcResult regRes = mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(regPayload))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String body = regRes.getResponse().getContentAsString();
+        String teenToken = objectMapper.readTree(body).path("data").path("token").asText();
+
+        // 1. Filtered activities for teen user should NEVER include activities with minAge > 16
+        MvcResult activitiesRes = mockMvc.perform(get("/api/activities?size=50")
+                        .header("Authorization", "Bearer " + teenToken))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        com.fasterxml.jackson.databind.JsonNode content = objectMapper.readTree(activitiesRes.getResponse().getContentAsString())
+                .path("data").path("content");
+
+        for (com.fasterxml.jackson.databind.JsonNode node : content) {
+            int minAge = node.path("minAge").asInt(0);
+            org.junit.jupiter.api.Assertions.assertTrue(minAge <= 16, "Activity minAge should not exceed user age (16)");
+        }
     }
 }

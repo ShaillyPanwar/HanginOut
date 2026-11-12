@@ -23,6 +23,7 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react';
+import FeedbackTriggerButton from '../components/feedback/FeedbackTriggerButton';
 
 export default function MatchResultPage() {
   const { id } = useParams();
@@ -34,6 +35,9 @@ export default function MatchResultPage() {
   const [activeTab, setActiveTab] = useState('matches'); // 'matches' | 'plans'
   const [loading, setLoading] = useState(true);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [planToast, setPlanToast] = useState({ message: '', type: 'success' });
+  const [deletePlanConfirmId, setDeletePlanConfirmId] = useState(null);
+  const [deletingPlan, setDeletingPlan] = useState(false);
 
   // Scheduling modal state
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -136,13 +140,28 @@ export default function MatchResultPage() {
     }
   };
 
-  const handleDeletePlan = async (planId) => {
-    if (!window.confirm('Are you sure you want to cancel and delete this hangout plan?')) return;
+  const handleDeletePlan = (planId) => {
+    setDeletePlanConfirmId(planId);
+  };
+
+  const executeDeletePlan = async () => {
+    if (!deletePlanConfirmId) return;
+    setDeletingPlan(true);
     try {
-      await planService.deletePlan(planId);
-      setPlans((prev) => prev.filter((p) => p.id !== planId));
+      await planService.deletePlan(deletePlanConfirmId);
+      setPlans((prev) => prev.filter((p) => p.id !== deletePlanConfirmId));
+      setPlanToast({ message: 'Hangout plan deleted successfully!', type: 'success' });
+      setTimeout(() => setPlanToast({ message: '', type: 'success' }), 3000);
+      setDeletePlanConfirmId(null);
     } catch (err) {
       console.error('Failed to delete plan:', err);
+      setPlanToast({
+        message: err.response?.data?.message || 'Failed to delete hangout plan',
+        type: 'error'
+      });
+      setTimeout(() => setPlanToast({ message: '', type: 'error' }), 4000);
+    } finally {
+      setDeletingPlan(false);
     }
   };
 
@@ -169,7 +188,7 @@ export default function MatchResultPage() {
       <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-          <p className="text-slate-400 text-sm">Aggregating squad consensus...</p>
+          <p className="text-slate-400 text-sm">Aggregating group consensus...</p>
         </div>
       </div>
     );
@@ -188,7 +207,7 @@ export default function MatchResultPage() {
             <Link
               to="/groups"
               className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
-              title="Back to Squads"
+              title="Back to Groups"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
@@ -288,7 +307,7 @@ export default function MatchResultPage() {
                   </div>
                   <div>
                     <h2 className="text-lg font-extrabold text-white">Unanimous Matches (100% Agreement)</h2>
-                    <p className="text-xs text-slate-400">Every squad member swiped RIGHT on these hangout spots!</p>
+                    <p className="text-xs text-slate-400">Every group member swiped RIGHT on these hangout spots!</p>
                   </div>
                 </div>
 
@@ -346,7 +365,7 @@ export default function MatchResultPage() {
                             {/* Member Votes Roster */}
                             <div className="bg-slate-950/60 rounded-xl p-2.5 border border-slate-800/80 mb-4">
                               <span className="text-[11px] font-semibold text-slate-400 block mb-1.5">
-                                Squad Votes ({match.likesCount}/{match.totalMembers}):
+                                Group Votes ({match.likesCount}/{match.totalMembers}):
                               </span>
                               <div className="flex flex-wrap gap-1.5">
                                 {match.memberVotes?.map((vote) => (
@@ -362,14 +381,21 @@ export default function MatchResultPage() {
                             </div>
                           </div>
 
-                          {/* Action Button */}
-                          <button
-                            onClick={() => handleOpenScheduleModal(act)}
-                            className="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 text-slate-950 font-extrabold text-sm transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
-                          >
-                            <Calendar className="w-4 h-4" />
-                            <span>Schedule Hangout</span>
-                          </button>
+                          {/* Action Buttons: Feedback & Schedule */}
+                          <div className="space-y-2 mt-2">
+                            <FeedbackTriggerButton
+                              activity={act}
+                              groupId={id}
+                              variant="matched-card"
+                            />
+                            <button
+                              onClick={() => handleOpenScheduleModal(act)}
+                              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 text-slate-950 font-extrabold text-sm transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
+                            >
+                              <Calendar className="w-4 h-4" />
+                              <span>Schedule Hangout</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     );
@@ -387,7 +413,7 @@ export default function MatchResultPage() {
                   </div>
                   <div>
                     <h2 className="text-lg font-extrabold text-white">Consensus Rankings</h2>
-                    <p className="text-xs text-slate-400">Activities ranked by squad agreement percentage</p>
+                    <p className="text-xs text-slate-400">Activities ranked by group agreement percentage</p>
                   </div>
                 </div>
               </div>
@@ -399,7 +425,7 @@ export default function MatchResultPage() {
                   </div>
                   <h3 className="text-base font-bold text-white mb-1">No Matches Recorded Yet</h3>
                   <p className="text-xs text-slate-400 max-w-sm mx-auto mb-6">
-                    Invite squad members to join with code <span className="text-orange-400 font-mono font-bold">{group?.inviteCode}</span> and start swiping to discover agreed spots!
+                    Invite group members to join with code <span className="text-orange-400 font-mono font-bold">{group?.inviteCode}</span> and start swiping to discover agreed spots!
                   </p>
                   <Link
                     to={`/groups/${id}/swipe`}
@@ -482,14 +508,21 @@ export default function MatchResultPage() {
                           </div>
                         </div>
 
-                        {/* Schedule Button */}
-                        <button
-                          onClick={() => handleOpenScheduleModal(act)}
-                          className="mt-3 w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs transition border border-slate-700 flex items-center justify-center gap-1.5"
-                        >
-                          <Calendar className="w-3.5 h-3.5 text-orange-400" />
-                          <span>Schedule Hangout</span>
-                        </button>
+                        {/* Action Buttons: Feedback & Schedule */}
+                        <div className="space-y-2 mt-3">
+                          <FeedbackTriggerButton
+                            activity={act}
+                            groupId={id}
+                            variant="matched-card"
+                          />
+                          <button
+                            onClick={() => handleOpenScheduleModal(act)}
+                            className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs transition border border-slate-700 flex items-center justify-center gap-1.5"
+                          >
+                            <Calendar className="w-3.5 h-3.5 text-orange-400" />
+                            <span>Schedule Hangout</span>
+                          </button>
+                        </div>
                       </div>
                     );
                   })}
@@ -504,8 +537,8 @@ export default function MatchResultPage() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-lg font-extrabold text-white">Squad Hangout Itinerary</h2>
-                <p className="text-xs text-slate-400">Scheduled events agreed upon by the squad</p>
+                <h2 className="text-lg font-extrabold text-white">Group Hangout Itinerary</h2>
+                <p className="text-xs text-slate-400">Scheduled events agreed upon by the group</p>
               </div>
             </div>
 
@@ -514,7 +547,7 @@ export default function MatchResultPage() {
                 <Calendar className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                 <h3 className="text-base font-bold text-white mb-1">No Hangouts Scheduled Yet</h3>
                 <p className="text-xs text-slate-400 max-w-sm mx-auto mb-6">
-                  Pick an agreed activity from the Consensus Results tab and schedule a date/time for the squad!
+                  Pick an agreed activity from the Consensus Results tab and schedule a date/time for the group!
                 </p>
                 <button
                   onClick={() => setActiveTab('matches')}
@@ -705,6 +738,58 @@ export default function MatchResultPage() {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Delete Plan Confirmation Modal */}
+      {deletePlanConfirmId && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center animate-fade-in">
+            <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mx-auto mb-3">
+              <Trash2 className="w-6 h-6" />
+            </div>
+
+            <h3 className="text-base font-bold text-white mb-1.5">Delete Hangout Plan?</h3>
+            <p className="text-xs text-slate-400 mb-5 leading-relaxed">
+              Are you sure you want to delete this scheduled hangout plan? This will remove the itinerary for all group members and cannot be undone.
+            </p>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setDeletePlanConfirmId(null)}
+                disabled={deletingPlan}
+                className="flex-1 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition"
+              >
+                Keep Plan
+              </button>
+              <button
+                type="button"
+                onClick={executeDeletePlan}
+                disabled={deletingPlan}
+                className="flex-1 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 transition shadow-lg shadow-rose-600/20 flex items-center justify-center gap-1.5 disabled:opacity-50"
+              >
+                {deletingPlan && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                <span>Yes, Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {planToast.message && (
+        <div className={`fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-semibold border ${
+          planToast.type === 'error'
+            ? 'bg-rose-950/90 border-rose-800 text-rose-200'
+            : 'bg-slate-900/90 border-slate-700 text-white'
+        }`}>
+          {planToast.type === 'error' ? (
+            <AlertCircle className="w-4 h-4 text-rose-400" />
+          ) : (
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          )}
+          <span>{planToast.message}</span>
         </div>
       )}
     </div>

@@ -43,6 +43,13 @@ public class SwipeService {
             throw new BadRequestException("This activity is no longer active for discovery");
         }
 
+        if (activity.getMinAge() != null && activity.getMinAge() > 0) {
+            Integer userAge = user.getAge();
+            if (userAge != null && userAge < activity.getMinAge()) {
+                throw new BadRequestException("This activity requires a minimum age of " + activity.getMinAge() + " years.");
+            }
+        }
+
         String normalizedAction = request.getAction().trim().toUpperCase();
 
         // Idempotent UPSERT handling: if a swipe already exists for (user, activity), update it

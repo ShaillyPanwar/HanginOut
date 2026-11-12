@@ -8,7 +8,7 @@ export default function RegisterPage() {
     name: '',
     email: '',
     password: '',
-    age: '',
+    dateOfBirth: '',
     city: 'Delhi',
   });
   const [error, setError] = useState('');
@@ -32,17 +32,53 @@ export default function RegisterPage() {
       return;
     }
 
+    if (!formData.dateOfBirth) {
+      setError('Date of birth is mandatory.');
+      return;
+    }
+
+    let formattedDob = formData.dateOfBirth.trim();
+    // Normalize localized dd-mm-yyyy or dd/mm/yyyy to ISO yyyy-mm-dd if applicable
+    if (formattedDob.includes('-')) {
+      const parts = formattedDob.split('-');
+      if (parts[0].length === 2 && parts[2]?.length === 4) {
+        formattedDob = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+      }
+    } else if (formattedDob.includes('/')) {
+      const parts = formattedDob.split('/');
+      if (parts[0].length === 2 && parts[2]?.length === 4) {
+        formattedDob = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+      }
+    }
+
+    const birthDate = new Date(formattedDob);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (isNaN(birthDate.getTime())) {
+      setError('Please provide a valid date of birth.');
+      return;
+    }
+    if (birthDate >= today) {
+      setError('Date of birth must be a past date. You cannot be born today or in the future.');
+      return;
+    }
+
     setSubmitting(true);
     try {
       await register({
-        ...formData,
-        age: formData.age ? parseInt(formData.age, 10) : null,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        dateOfBirth: formattedDob,
+        city: formData.city,
       });
       navigate('/profile');
     } catch (err) {
       console.error("Registration error:", err);
-      if (err.response?.data?.errors) {
+      if (err.response?.data?.errors && Object.keys(err.response.data.errors).length > 0) {
         setFieldErrors(err.response.data.errors);
+        const detailedMessages = Object.values(err.response.data.errors).join('. ');
+        setError(detailedMessages || err.response.data.message || 'Please correct the highlighted fields.');
       } else {
         const msg = err.response?.data?.message || 'Registration failed. Please check your inputs.';
         setError(msg);
@@ -128,18 +164,18 @@ export default function RegisterPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Age
+                  Date of Birth *
                 </label>
                 <input
-                  type="number"
-                  name="age"
-                  min="13"
-                  max="120"
-                  value={formData.age}
+                  type="date"
+                  name="dateOfBirth"
+                  required
+                  max={new Date().toISOString().split('T')[0]}
+                  value={formData.dateOfBirth}
                   onChange={handleChange}
-                  placeholder="20"
                   className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
                 />
+                {fieldErrors.dateOfBirth && <p className="text-xs text-rose-400 mt-1">{fieldErrors.dateOfBirth}</p>}
               </div>
 
               <div>
@@ -153,6 +189,7 @@ export default function RegisterPage() {
                   className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
                 >
                   <option value="Delhi">Delhi NCR</option>
+                  <option value="Rohini, Delhi">Rohini, Delhi</option>
                   <option value="Noida">Noida</option>
                   <option value="Gurugram">Gurugram</option>
                   <option value="Mumbai">Mumbai</option>

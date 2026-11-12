@@ -1,7 +1,9 @@
 package com.hanginout.user.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 @Entity
 @Table(name = "users")
@@ -20,6 +22,9 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
     private Integer age;
 
     private String city;
@@ -37,6 +42,21 @@ public class User {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     public User() {}
+
+    public User(String email, String passwordHash, String name, LocalDate dateOfBirth, String city, String role) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        if (dateOfBirth != null) {
+            this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+        }
+        this.city = city;
+        this.role = (role != null) ? role : "ROLE_USER";
+        this.isActive = true;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 
     public User(String email, String passwordHash, String name, Integer age, String city, String role) {
         this.email = email;
@@ -87,7 +107,21 @@ public class User {
         this.name = name;
     }
 
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        if (dateOfBirth != null) {
+            this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+        }
+    }
+
     public Integer getAge() {
+        if (dateOfBirth != null) {
+            return Period.between(dateOfBirth, LocalDate.now()).getYears();
+        }
         return age;
     }
 

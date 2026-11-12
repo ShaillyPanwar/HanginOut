@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { savedService } from '../services/savedService';
 import { Bookmark, Trash2, ArrowLeft, Clock, MapPin, IndianRupee, Sparkles, Loader2, Compass } from 'lucide-react';
+import FeedbackTriggerButton from '../components/feedback/FeedbackTriggerButton';
 
 export default function SavedActivitiesPage() {
   const [savedItems, setSavedItems] = useState([]);
@@ -100,17 +101,23 @@ export default function SavedActivitiesPage() {
                       </div>
                     </div>
 
-                    <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                      <span className="text-[11px] text-slate-500">
+                    <div className="mt-4 pt-3 border-t border-slate-800/80">
+                      <div className="flex items-center justify-between gap-2">
+                        <FeedbackTriggerButton
+                          activity={act}
+                          variant="saved-card"
+                        />
+                        <button
+                          onClick={() => handleRemove(act.id)}
+                          className="text-xs text-rose-400 hover:text-rose-300 p-2 hover:bg-rose-500/10 rounded-xl transition border border-transparent hover:border-rose-500/20"
+                          title="Remove bookmark"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <span className="text-[10px] text-slate-500 block mt-2">
                         Saved on {new Date(item.savedAt).toLocaleDateString()}
                       </span>
-                      <button
-                        onClick={() => handleRemove(act.id)}
-                        className="text-xs text-rose-400 hover:text-rose-300 p-1.5 hover:bg-rose-500/10 rounded-lg transition"
-                        title="Remove bookmark"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
                     </div>
                   </div>
                 </div>

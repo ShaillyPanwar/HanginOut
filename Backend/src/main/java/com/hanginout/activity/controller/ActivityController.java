@@ -30,9 +30,12 @@ public class ActivityController {
     }
 
     @GetMapping
-    @Operation(summary = "Discover activities with filters and pagination", description = "Returns active activities matching city, category, budget, and group filters")
+    @Operation(summary = "Discover activities with filters and pagination", description = "Returns active activities matching city, zone, locality, category, budget, and group filters")
     public ResponseEntity<ApiResponse<Page<ActivityCardDTO>>> getActivities(
+            @AuthenticationPrincipal UserPrincipal principal,
             @RequestParam(required = false) String city,
+            @RequestParam(required = false) String zone,
+            @RequestParam(required = false) String locality,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) BigDecimal maxBudget,
             @RequestParam(required = false) String groupType,
@@ -40,27 +43,37 @@ public class ActivityController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<ActivityCardDTO> results = activityService.getFilteredActivities(city, categoryId, maxBudget, groupType, pageable);
+        Integer userAge = (principal != null) ? principal.getAge() : null;
+        Page<ActivityCardDTO> results = activityService.getFilteredActivities(userAge, city, zone, locality, categoryId, maxBudget, groupType, pageable);
         return ResponseEntity.ok(ApiResponse.success(results));
     }
 
     @GetMapping("/recommended")
-    @Operation(summary = "Get personalized activity recommendations", description = "Uses the rule-based scoring algorithm (+30 budget, +25 category, +20 group, +15 duration, +10 location) excluding already swiped activities")
+    @Operation(summary = "Get personalized activity recommendations", description = "Uses the rule-based scoring algorithm with zone, locality, and distance filtering")
     public ResponseEntity<ApiResponse<List<ActivityCardDTO>>> getRecommendedActivities(
             @AuthenticationPrincipal UserPrincipal principal,
             @RequestParam(required = false) String city,
+            @RequestParam(required = false) String zone,
+            @RequestParam(required = false) String locality,
+            @RequestParam(required = false) Double latitude,
+            @RequestParam(required = false) Double longitude,
+            @RequestParam(required = false) Double maxDistanceKm,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        List<ActivityCardDTO> recommendations = activityService.getRecommendedActivities(principal.getId(), city, pageable);
+        List<ActivityCardDTO> recommendations = activityService.getRecommendedActivities(
+                principal.getId(), city, zone, locality, latitude, longitude, maxDistanceKm, pageable);
         return ResponseEntity.ok(ApiResponse.success(recommendations));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get activity details", description = "Retrieves full activity details, multi-image gallery, and associated physical spots for the expanded view")
-    public ResponseEntity<ApiResponse<ActivityDetailDTO>> getActivityById(@PathVariable Long id) {
-        ActivityDetailDTO activity = activityService.getActivityById(id);
+    public ResponseEntity<ApiResponse<ActivityDetailDTO>> getActivityById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        Integer userAge = (principal != null) ? principal.getAge() : null;
+        ActivityDetailDTO activity = activityService.getActivityById(id, userAge);
         return ResponseEntity.ok(ApiResponse.success(activity));
     }
 

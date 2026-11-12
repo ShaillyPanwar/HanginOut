@@ -8,6 +8,8 @@ import com.hanginout.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 public class UserService {
 
@@ -30,8 +32,10 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
 
         user.setName(request.getName().trim());
-        if (request.getAge() != null) {
-            user.setAge(request.getAge());
+        if (request.getDateOfBirth() != null) {
+            user.setDateOfBirth(request.getDateOfBirth());
+        } else if (request.getAge() != null) {
+            user.setDateOfBirth(LocalDate.now().minusYears(request.getAge()));
         }
         if (request.getCity() != null) {
             user.setCity(request.getCity().trim());

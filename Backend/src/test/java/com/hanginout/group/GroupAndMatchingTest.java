@@ -65,7 +65,7 @@ class GroupAndMatchingTest {
             return objectMapper.readTree(loginRes.getResponse().getContentAsString()).path("data").path("token").asText();
         }
 
-        String regPayload = String.format("{\"name\":\"%s\",\"email\":\"%s\",\"password\":\"%s\",\"age\":21,\"city\":\"Delhi\"}", name, email, password);
+        String regPayload = String.format("{\"name\":\"%s\",\"email\":\"%s\",\"password\":\"%s\",\"dateOfBirth\":\"2003-05-15\",\"city\":\"Delhi\"}", name, email, password);
         MvcResult regRes = mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(regPayload))
