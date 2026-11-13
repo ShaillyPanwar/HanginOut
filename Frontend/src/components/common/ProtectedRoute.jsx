@@ -8,9 +8,9 @@ export default function ProtectedRoute() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500 mb-3" />
-        <p className="text-sm">Verifying session...</p>
+      <div className="min-h-screen bg-[#08090E] flex flex-col items-center justify-center text-slate-400">
+        <Loader2 className="w-8 h-8 animate-spin text-[#2B59FF] mb-3" />
+        <p className="text-sm font-medium">Verifying session...</p>
       </div>
     );
   }

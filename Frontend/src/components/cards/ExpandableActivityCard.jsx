@@ -50,7 +50,7 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.7}
         onDragEnd={handleDragEnd}
-        className={`relative w-full h-full bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col justify-between ${
+        className={`relative w-full h-full bg-[#111422] rounded-3xl border border-blue-500/20 shadow-2xl overflow-hidden flex flex-col justify-between ${
           isTopCard ? 'cursor-grab active:cursor-grabbing' : 'pointer-events-none'
         }`}
       >
@@ -59,13 +59,13 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
           <>
             <motion.div
               style={{ opacity: likeOpacity }}
-              className="absolute top-6 left-6 z-30 px-4 py-1.5 border-4 border-emerald-400 text-emerald-400 font-extrabold text-2xl uppercase tracking-wider rounded-xl rotate-[-12deg] pointer-events-none"
+              className="absolute top-6 left-6 z-30 px-4 py-1.5 border-4 border-[#2B59FF] bg-[#2B59FF]/20 text-white font-extrabold text-2xl uppercase tracking-wider rounded-2xl rotate-[-12deg] pointer-events-none backdrop-blur-sm shadow-glow-blue"
             >
               LIKE
             </motion.div>
             <motion.div
               style={{ opacity: rejectOpacity }}
-              className="absolute top-6 right-6 z-30 px-4 py-1.5 border-4 border-rose-500 text-rose-500 font-extrabold text-2xl uppercase tracking-wider rounded-xl rotate-[12deg] pointer-events-none"
+              className="absolute top-6 right-6 z-30 px-4 py-1.5 border-4 border-slate-300 bg-white/20 text-white font-extrabold text-2xl uppercase tracking-wider rounded-2xl rotate-[12deg] pointer-events-none backdrop-blur-sm"
             >
               PASS
             </motion.div>
@@ -75,7 +75,7 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
         {/* Collapsed View (Primary Card Face) */}
         <div className="relative w-full h-full flex flex-col">
           {/* Main Photo */}
-          <div className="relative w-full h-[65%] overflow-hidden bg-slate-950">
+          <div className="relative w-full h-[65%] overflow-hidden bg-[#08090E]">
             <img
               src={images[0]}
               alt={activity.title}
@@ -85,29 +85,29 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
               }}
               className="w-full h-full object-cover pointer-events-none"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#111422] via-[#111422]/20 to-transparent" />
 
             {/* Badges on Image */}
             <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
               {activity.categoryName && (
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-900/80 backdrop-blur-md text-orange-400 border border-slate-700/60 shadow">
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#0B0C12]/80 backdrop-blur-md text-blue-400 border border-blue-500/30 shadow">
                   {activity.categoryName}
                 </span>
               )}
               {activity.averageRating && activity.reviewCount > 0 && (
-                <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-900/80 backdrop-blur-md text-amber-300 border border-amber-500/30 flex items-center gap-1 shadow">
+                <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#0B0C12]/80 backdrop-blur-md text-amber-300 border border-amber-500/30 flex items-center gap-1 shadow">
                   <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                   <span>{activity.averageRating} ({activity.reviewCount})</span>
                 </span>
               )}
               {activity.distanceFormatted ? (
-                <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-900/80 backdrop-blur-md text-emerald-300 border border-emerald-500/30 flex items-center gap-1 shadow">
-                  <MapPin className="w-3 h-3 text-emerald-400" />
+                <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#0B0C12]/80 backdrop-blur-md text-cyan-300 border border-cyan-500/30 flex items-center gap-1 shadow">
+                  <MapPin className="w-3 h-3 text-cyan-400" />
                   <span>{activity.distanceFormatted}</span>
                 </span>
               ) : activity.distanceKm != null ? (
-                <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-900/80 backdrop-blur-md text-emerald-300 border border-emerald-500/30 flex items-center gap-1 shadow">
-                  <MapPin className="w-3 h-3 text-emerald-400" />
+                <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#0B0C12]/80 backdrop-blur-md text-cyan-300 border border-cyan-500/30 flex items-center gap-1 shadow">
+                  <MapPin className="w-3 h-3 text-cyan-400" />
                   <span>{activity.distanceKm} km away</span>
                 </span>
               ) : null}
@@ -115,7 +115,7 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
           </div>
 
           {/* Card Info Section */}
-          <div className="flex-1 p-5 flex flex-col justify-between -mt-6 z-10 bg-slate-900">
+          <div className="flex-1 p-5 flex flex-col justify-between -mt-6 z-10 bg-[#111422]">
             <div>
               <div className="flex items-start justify-between gap-2">
                 <h3 className="text-xl font-bold text-white line-clamp-1">
@@ -124,7 +124,7 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
               </div>
 
               <div className="flex items-center gap-4 text-xs text-slate-300 mt-2 font-medium">
-                <div className="flex items-center gap-1 text-emerald-400">
+                <div className="flex items-center gap-1 text-cyan-400 font-semibold">
                   <IndianRupee className="w-3.5 h-3.5" />
                   <span>
                     {activity.minCost === 0 && activity.maxCost === 0
@@ -139,7 +139,7 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
                 </div>
 
                 <div className="flex items-center gap-1 text-slate-300 font-medium">
-                  <MapPin className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
+                  <MapPin className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
                   <span className="truncate max-w-[190px]" title={displayLocation}>{displayLocation}</span>
                 </div>
               </div>
@@ -148,28 +148,28 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
             {/* Expand Prompt Button */}
             <button
               onClick={() => setExpanded(true)}
-              className="w-full mt-3 py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 text-slate-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition"
+              className="w-full mt-3 py-2 px-3 rounded-2xl bg-[#171b30] hover:bg-[#1f2542] border border-blue-500/20 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition"
             >
               <span>Tap for full details & photo gallery</span>
-              <ChevronUp className="w-4 h-4 text-orange-400 animate-bounce" />
+              <ChevronUp className="w-4 h-4 text-blue-400 animate-bounce" />
             </button>
 
-            {/* Action Buttons: PASS and LIKE */}
+            {/* Action Buttons: PASS (High-Contrast Pure White) and LIKE (Electric Cobalt Blue) */}
             <div className="flex items-center justify-center gap-8 pt-2">
               <button
                 onClick={() => onSwipe(activity.id, 'REJECT')}
                 aria-label="Pass activity"
-                className="w-13 h-13 rounded-full bg-slate-800/90 border border-slate-700 text-rose-400 hover:text-white hover:bg-rose-600 hover:border-rose-500 flex items-center justify-center shadow-lg transition-all transform hover:scale-110 active:scale-95"
+                className="w-13 h-13 rounded-full bg-white hover:bg-slate-200 text-slate-950 flex items-center justify-center shadow-lg transition-all transform hover:scale-110 active:scale-95"
               >
-                <X className="w-7 h-7" />
+                <X className="w-7 h-7 stroke-[2.5]" />
               </button>
 
               <button
                 onClick={() => onSwipe(activity.id, 'LIKE')}
                 aria-label="Like activity"
-                className="w-15 h-15 rounded-full bg-gradient-to-tr from-orange-500 to-amber-400 text-slate-950 hover:from-orange-600 hover:to-amber-500 flex items-center justify-center shadow-xl shadow-orange-500/25 transition-all transform hover:scale-110 active:scale-95 font-bold"
+                className="w-14 h-14 rounded-full bg-[#2B59FF] hover:bg-[#3870FF] text-white flex items-center justify-center shadow-xl shadow-blue-500/40 transition-all transform hover:scale-110 active:scale-95 font-bold"
               >
-                <Heart className="w-8 h-8 fill-slate-950" />
+                <Heart className="w-7 h-7 fill-white" />
               </button>
             </div>
           </div>
@@ -183,28 +183,28 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute inset-0 z-50 bg-slate-950 flex flex-col overflow-y-auto rounded-3xl"
+              className="absolute inset-0 z-50 bg-[#0B0C12] flex flex-col overflow-y-auto rounded-3xl"
             >
               {/* Top Bar with Collapse Header */}
-              <div className="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md px-5 py-3 border-b border-slate-800 flex items-center justify-between">
+              <div className="sticky top-0 z-30 bg-[#111422]/95 backdrop-blur-md px-5 py-3 border-b border-blue-500/20 flex items-center justify-between">
                 <div>
                   <h4 className="font-bold text-white text-sm line-clamp-1">{activity.title}</h4>
                   <div className="flex items-center gap-1.5 text-xs">
-                    <span className="text-orange-400 font-semibold">{activity.categoryName}</span>
+                    <span className="text-blue-400 font-semibold">{activity.categoryName}</span>
                     <span className="text-slate-500">•</span>
                     <span className="text-slate-300 truncate max-w-[200px]">{displayLocation}</span>
                   </div>
                 </div>
                 <button
                   onClick={() => setExpanded(false)}
-                  className="p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                  className="p-1.5 rounded-full bg-[#171b30] hover:bg-[#1f2542] border border-blue-500/20 text-slate-300 transition"
                 >
                   <ChevronDown className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Gallery Carousel */}
-              <div className="relative w-full h-64 bg-slate-900">
+              <div className="relative w-full h-64 bg-[#08090E]">
                 <img
                   src={images[activeImageIndex] || fallbackUrl}
                   alt="Gallery"
@@ -220,8 +220,8 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                          idx === activeImageIndex ? 'w-5 bg-orange-400' : 'bg-white/50'
+                        className={`h-2 rounded-full transition-all ${
+                          idx === activeImageIndex ? 'w-5 bg-[#2B59FF]' : 'w-2 bg-white/50'
                         }`}
                       />
                     ))}
@@ -239,23 +239,23 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
                   </p>
                 </div>
 
-                {/* Specs Grid */}
+                {/* Specs Grid (Screen 3 Statistics Card style) */}
                 <div className="grid grid-cols-2 gap-3 text-xs">
-                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                  <div className="p-3.5 rounded-2xl bg-[#131625] border border-blue-500/15">
                     <span className="text-slate-400 block mb-1">Group Fit</span>
-                    <span className="font-semibold text-white">{activity.groupType || 'Friends & Solo'}</span>
+                    <span className="font-bold text-white text-sm">{activity.groupType || 'Friends & Solo'}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                  <div className="p-3.5 rounded-2xl bg-[#131625] border border-blue-500/15">
                     <span className="text-slate-400 block mb-1">Atmosphere</span>
-                    <span className="font-semibold text-white">{activity.locationType || 'Indoor/Outdoor'}</span>
+                    <span className="font-bold text-white text-sm">{activity.locationType || 'Indoor/Outdoor'}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                  <div className="p-3.5 rounded-2xl bg-[#131625] border border-blue-500/15">
                     <span className="text-slate-400 block mb-1">Best Time</span>
-                    <span className="font-semibold text-white">{activity.bestTime || 'Evening'}</span>
+                    <span className="font-bold text-white text-sm">{activity.bestTime || 'Evening'}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                  <div className="p-3.5 rounded-2xl bg-[#131625] border border-blue-500/15">
                     <span className="text-slate-400 block mb-1">Duration</span>
-                    <span className="font-semibold text-white">{activity.durationMinutes} mins</span>
+                    <span className="font-bold text-white text-sm">{activity.durationMinutes} mins</span>
                   </div>
                 </div>
 
@@ -263,23 +263,23 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
                 {activity.associatedSpots && activity.associatedSpots.length > 0 && (
                   <div>
                     <h5 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-orange-400" />
+                      <Building2 className="w-3.5 h-3.5 text-blue-400" />
                       <span>Associated Spots / Places</span>
                     </h5>
                     <div className="space-y-3">
                       {activity.associatedSpots.map((spot) => (
-                        <div key={spot.id} className="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1.5">
+                        <div key={spot.id} className="p-3.5 rounded-2xl bg-[#131625] border border-blue-500/15 space-y-1.5">
                           <div className="flex items-center justify-between gap-2">
                             <h6 className="font-bold text-white text-sm">{spot.name}</h6>
                             {(spot.locality || spot.zone) && (
-                              <span className="text-[11px] text-orange-400 font-medium">
+                              <span className="text-[11px] text-blue-400 font-medium">
                                 {spot.locality ? `${spot.locality} · ${spot.zone || ''}` : spot.zone}
                               </span>
                             )}
                           </div>
                           <p className="text-xs text-slate-400 leading-relaxed">{spot.address}</p>
                           {spot.openingHours && (
-                            <p className="text-xs text-orange-400 font-mono">🕒 {spot.openingHours}</p>
+                            <p className="text-xs text-cyan-400 font-mono">🕒 {spot.openingHours}</p>
                           )}
                         </div>
                       ))}
@@ -288,17 +288,17 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
                 )}
               </div>
 
-              {/* Bottom Sticky Action Bar in Expanded View */}
-              <div className="sticky bottom-0 bg-slate-900/95 backdrop-blur-md p-4 border-t border-slate-800 space-y-3">
-                <div className="flex items-center justify-between gap-4">
+              {/* Bottom Sticky Action Bar in Expanded View (Screen 3 style dual action buttons) */}
+              <div className="sticky bottom-0 bg-[#0B0C12]/95 backdrop-blur-md p-4 border-t border-blue-500/20 space-y-3">
+                <div className="flex items-center justify-between gap-3">
                   <button
                     onClick={() => {
                       setExpanded(false);
                       onSwipe(activity.id, 'REJECT');
                     }}
-                    className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-rose-500/20 text-rose-400 font-bold text-sm border border-slate-700 hover:border-rose-500/40 transition flex items-center justify-center gap-2"
+                    className="btn-white flex-1 py-3.5 rounded-full font-bold text-slate-950 shadow-md text-sm flex items-center justify-center gap-2"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-4 h-4 stroke-[2.5]" />
                     <span>Pass</span>
                   </button>
 
@@ -307,14 +307,14 @@ export default function ExpandableActivityCard({ activity, onSwipe, isTopCard = 
                       setExpanded(false);
                       onSwipe(activity.id, 'LIKE');
                     }}
-                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 text-slate-950 font-bold text-sm shadow-lg shadow-orange-500/20 hover:from-orange-600 hover:to-amber-500 transition flex items-center justify-center gap-2"
+                    className="btn-cobalt flex-1 py-3.5 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 text-sm flex items-center justify-center gap-2"
                   >
-                    <Heart className="w-4 h-4 fill-slate-950" />
+                    <Heart className="w-4 h-4 fill-white" />
                     <span>Love It</span>
                   </button>
                 </div>
 
-                {/* "Already visited? Add feedback" (Requirement 2) */}
+                {/* "Already visited? Add feedback" */}
                 <FeedbackTriggerButton
                   activity={activity}
                   variant="expanded-card"

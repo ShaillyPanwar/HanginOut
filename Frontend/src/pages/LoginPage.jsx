@@ -37,24 +37,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#08090E] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
+      {/* Ambient Cobalt Glow Mesh */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-radial from-blue-600/25 via-blue-900/10 to-transparent blur-3xl pointer-events-none -z-10" />
+
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link to="/" className="inline-flex items-center gap-2 mb-4 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-400 flex items-center justify-center font-bold text-slate-950 shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform">
+        <Link to="/" className="inline-flex items-center gap-2.5 mb-4 group">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#2B59FF] to-[#60A5FA] flex items-center justify-center font-bold text-white text-base shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform">
             HO
           </div>
-          <span className="font-extrabold text-2xl tracking-tight text-white">Hangin<span className="text-orange-500">Out</span></span>
+          <span className="font-extrabold text-2xl tracking-tight text-white">
+            Hangin<span className="text-[#2B59FF]">Out</span>
+          </span>
         </Link>
-        <h2 className="text-2xl font-bold tracking-tight text-white">Welcome back!</h2>
+        <h2 className="text-3xl font-extrabold tracking-tight text-white">Welcome back</h2>
         <p className="mt-2 text-sm text-slate-400">
           Sign in to find affordable hangouts with your friends
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <div className="bg-slate-900 py-8 px-6 sm:px-10 shadow-2xl rounded-2xl border border-slate-800">
+        <div className="bg-[#0B0C12] py-8 px-6 sm:px-10 shadow-2xl rounded-3xl border border-blue-500/20 backdrop-blur-md">
           {error && (
-            <div className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-3 text-rose-400 text-sm">
+            <div className="mb-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-3 text-rose-400 text-sm">
               <AlertCircle className="w-5 h-5 flex-shrink-0" />
               <span>{error}</span>
             </div>
@@ -62,7 +67,7 @@ export default function LoginPage() {
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
                 Email address
               </label>
               <input
@@ -71,12 +76,12 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="student@college.edu"
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all text-sm"
+                className="w-full px-4 py-3 rounded-2xl bg-[#08090E] border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
                 Password
               </label>
               <input
@@ -85,7 +90,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all text-sm"
+                className="w-full px-4 py-3 rounded-2xl bg-[#08090E] border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
               />
             </div>
 
@@ -93,7 +98,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all shadow-lg shadow-orange-500/20 disabled:opacity-50 text-sm"
+                className="btn-cobalt w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 transition-all disabled:opacity-50 text-sm"
               >
                 {submitting ? (
                   <>
@@ -110,9 +115,9 @@ export default function LoginPage() {
             </div>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-slate-800 text-center text-sm text-slate-400">
+          <div className="mt-6 pt-6 border-t border-slate-800/80 text-center text-sm text-slate-400">
             Don't have an account yet?{' '}
-            <Link to="/register" className="font-semibold text-orange-400 hover:text-orange-300">
+            <Link to="/register" className="font-bold text-[#2B59FF] hover:text-[#60A5FA] transition">
               Create an account
             </Link>
           </div>

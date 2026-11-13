@@ -267,58 +267,63 @@ export default function DiscoverPage() {
   const hasMore = currentIndex < activities.length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Top Navbar */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+    <div className="min-h-screen bg-[#08090E] text-slate-100 flex flex-col relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
+      {/* Ambient Cobalt Glow Mesh */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-gradient-radial from-blue-600/20 via-blue-900/5 to-transparent blur-3xl pointer-events-none -z-10" />
+
+      {/* Top Navigation & Status Bar */}
+      <header className="border-b border-slate-800/80 bg-[#0B0C12]/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-orange-500 to-amber-400 flex items-center justify-center font-bold text-slate-950 text-sm shadow">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[#2B59FF] to-[#60A5FA] flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform">
               HO
             </div>
-            <span className="font-bold text-lg text-white">Hangin<span className="text-orange-500">Out</span></span>
+            <span className="font-extrabold text-lg tracking-tight text-white">
+              Hangin<span className="text-[#2B59FF]">Out</span>
+            </span>
           </Link>
 
           <div className="flex items-center gap-3">
             <Link
               to="/saved"
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition relative"
+              className="p-2.5 rounded-full bg-[#131625] hover:bg-[#1c2138] border border-blue-500/20 text-slate-300 hover:text-white transition shadow-sm relative"
               title="My Saved Hangouts"
             >
-              <Bookmark className="w-5 h-5" />
+              <Bookmark className="w-4 h-4" />
             </Link>
 
             <Link
               to="/onboarding"
-              className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-2 rounded-xl transition flex items-center gap-1.5 font-medium"
+              className="text-xs bg-[#131625] hover:bg-[#1c2138] border border-blue-500/20 text-slate-200 hover:text-white px-3.5 py-2 rounded-full transition flex items-center gap-1.5 font-semibold shadow-sm"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-orange-400" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#2B59FF]" />
               <span className="hidden sm:inline">Preferences</span>
             </Link>
           </div>
         </div>
 
         {/* Geolocation & Distance Filter Bar */}
-        <div className="border-t border-slate-800/80 bg-slate-950/80 px-4 py-2.5">
+        <div className="border-t border-slate-800/80 bg-[#0B0C12]/90 px-4 py-2.5">
           <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
             {/* Detected / Fallback / Manual Location Indicator */}
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowLocationModal(true)}
-                className="flex items-center gap-1.5 text-xs text-orange-400 hover:text-orange-300 bg-orange-500/10 hover:bg-orange-500/20 px-3 py-1.5 rounded-full border border-orange-500/20 font-medium transition"
+                className="flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 px-3.5 py-1.5 rounded-full border border-blue-500/30 font-semibold transition shadow-sm"
               >
-                <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-blue-400" />
                 <span className="font-semibold">{userLocation.label || 'All Delhi NCR'}</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-800/80 text-slate-300 font-mono">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#131625] text-slate-300 font-mono border border-slate-700/60">
                   {userLocation.source === 'gps' ? 'GPS' : userLocation.source === 'all' ? 'All NCR' : userLocation.locality ? 'Locality' : 'Zone'}
                 </span>
                 <span className="text-slate-400 text-[10px] ml-0.5">(Change)</span>
               </button>
             </div>
 
-            {/* Distance Filter Pills */}
+            {/* Distance Filter Pills (Screen 3 style) */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
               <span className="text-[11px] font-semibold text-slate-400 mr-1 flex items-center gap-1 flex-shrink-0">
-                <Compass className="w-3 h-3 text-orange-400" />
+                <Compass className="w-3 h-3 text-blue-400" />
                 <span>Radius:</span>
               </span>
               {DISTANCE_OPTIONS.map((opt) => {
@@ -330,10 +335,10 @@ export default function DiscoverPage() {
                       setSelectedDistance(opt.value);
                       setCurrentIndex(0);
                     }}
-                    className={`text-[11px] px-2.5 py-1 rounded-full font-medium whitespace-nowrap transition ${
+                    className={`text-[11px] px-3 py-1 rounded-full whitespace-nowrap transition-all ${
                       isActive
-                        ? 'bg-gradient-to-r from-orange-500 to-amber-400 text-slate-950 font-bold shadow-sm shadow-orange-500/20'
-                        : 'bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800'
+                        ? 'bg-white text-slate-950 font-bold shadow-md'
+                        : 'bg-[#131625] hover:bg-[#1a1e33] text-slate-400 hover:text-white border border-slate-800'
                     }`}
                   >
                     {opt.label}
@@ -349,14 +354,14 @@ export default function DiscoverPage() {
       <main className="flex-1 max-w-lg mx-auto w-full px-4 py-6 flex flex-col justify-center items-center relative">
         {/* Toast Notification */}
         {feedbackToast && (
-          <div className="absolute top-2 z-50 px-4 py-2 rounded-full bg-slate-800/95 border border-slate-700 text-white text-xs font-semibold shadow-2xl flex items-center gap-2 animate-fade-in">
+          <div className="absolute top-2 z-50 px-4 py-2 rounded-full bg-[#131625]/95 border border-blue-500/30 text-white text-xs font-semibold shadow-2xl flex items-center gap-2 animate-fade-in backdrop-blur-md">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span>{feedbackToast}</span>
           </div>
         )}
 
         {errorToast && (
-          <div className="absolute top-2 z-50 px-4 py-2 rounded-full bg-rose-500/90 border border-rose-400 text-white text-xs font-semibold shadow-2xl flex items-center gap-2 animate-fade-in">
+          <div className="absolute top-2 z-50 px-4 py-2 rounded-full bg-rose-500/90 border border-rose-400 text-white text-xs font-semibold shadow-2xl flex items-center gap-2 animate-fade-in backdrop-blur-md">
             <AlertCircle className="w-4 h-4 text-white" />
             <span>{errorToast}</span>
           </div>
@@ -364,17 +369,17 @@ export default function DiscoverPage() {
 
         {loading ? (
           <div className="flex flex-col items-center justify-center text-slate-400 py-24">
-            <Loader2 className="w-10 h-10 animate-spin text-orange-500 mb-4" />
+            <Loader2 className="w-10 h-10 animate-spin text-[#2B59FF] mb-4" />
             <p className="text-sm font-medium">Scoring and finding spots near {userLocation.label}...</p>
           </div>
         ) : hasMore ? (
           <div className="w-full flex flex-col items-center">
             {/* Quick Bookmark Pill */}
             <div className="w-full max-w-sm sm:max-w-md flex justify-between items-center mb-3 px-2 text-xs text-slate-400">
-              <span className="font-mono">Card {currentIndex + 1} of {activities.length}</span>
+              <span className="font-mono text-slate-400">Card {currentIndex + 1} of {activities.length}</span>
               <button
                 onClick={handleBookmarkCurrent}
-                className="hover:text-amber-400 transition flex items-center gap-1"
+                className="hover:text-blue-400 transition flex items-center gap-1.5 font-medium"
               >
                 <Bookmark className="w-3.5 h-3.5" />
                 <span>Save for later</span>
@@ -390,8 +395,8 @@ export default function DiscoverPage() {
           </div>
         ) : (
           /* Empty Deck State */
-          <div className="text-center p-8 bg-slate-900 border border-slate-800 rounded-3xl max-w-sm sm:max-w-md shadow-2xl">
-            <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 flex items-center justify-center mx-auto mb-4">
+          <div className="text-center p-8 bg-[#111422] border border-blue-500/20 rounded-3xl max-w-sm sm:max-w-md shadow-2xl">
+            <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto mb-4">
               <Compass className="w-7 h-7" />
             </div>
             <h3 className="text-xl font-bold text-white mb-2">
@@ -409,7 +414,7 @@ export default function DiscoverPage() {
                     setSelectedDistance(null);
                     setCurrentIndex(0);
                   }}
-                  className="w-full py-2.5 px-4 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 text-sm"
+                  className="w-full py-3 px-4 rounded-full font-bold text-white bg-[#2B59FF] hover:bg-[#3870FF] transition shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 text-sm"
                 >
                   <Compass className="w-4 h-4" />
                   <span>Expand to Any Distance</span>
@@ -417,16 +422,16 @@ export default function DiscoverPage() {
               )}
               <button
                 onClick={() => setShowLocationModal(true)}
-                className="w-full py-2.5 px-4 rounded-xl font-semibold text-xs text-orange-400 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/20 transition flex items-center justify-center gap-1.5"
+                className="w-full py-3 px-4 rounded-full font-semibold text-xs text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 transition flex items-center justify-center gap-1.5"
               >
                 <MapPin className="w-3.5 h-3.5" />
                 <span>Change Neighborhood Location</span>
               </button>
               <button
                 onClick={loadActivities}
-                className="w-full py-2.5 px-4 rounded-xl font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition flex items-center justify-center gap-2 text-xs"
+                className="w-full py-3 px-4 rounded-full font-bold text-slate-950 bg-white hover:bg-slate-200 transition flex items-center justify-center gap-2 text-xs shadow-md"
               >
-                <RotateCcw className="w-3.5 h-3.5 text-orange-400" />
+                <RotateCcw className="w-3.5 h-3.5 text-slate-950" />
                 <span>Refresh Card Deck</span>
               </button>
             </div>
@@ -447,8 +452,8 @@ export default function DiscoverPage() {
       {/* Mandatory Date of Birth Modal (Age & Safety Rule) */}
       {showDobModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center">
-            <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 flex items-center justify-center mx-auto mb-4">
+          <div className="bg-[#0B0C12] border border-blue-500/20 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center">
+            <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto mb-4">
               <Calendar className="w-7 h-7" />
             </div>
 
@@ -471,13 +476,13 @@ export default function DiscoverPage() {
                 max={new Date().toISOString().split('T')[0]}
                 value={dobInput}
                 onChange={(e) => setDobInput(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-3 rounded-2xl bg-[#08090E] border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
 
               <button
                 type="submit"
                 disabled={dobSaving}
-                className="w-full py-3 px-4 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+                className="btn-cobalt w-full py-3.5 px-4 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 flex items-center justify-center gap-2 text-sm disabled:opacity-50"
               >
                 {dobSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Date of Birth'}
               </button>

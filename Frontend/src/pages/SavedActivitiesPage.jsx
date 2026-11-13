@@ -34,23 +34,26 @@ export default function SavedActivitiesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#08090E] text-slate-100 flex flex-col relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
+      {/* Ambient Cobalt Glow Mesh */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-gradient-radial from-blue-600/20 via-blue-900/5 to-transparent blur-3xl pointer-events-none -z-10" />
+
       {/* Top Navbar */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-slate-800/80 bg-[#0B0C12]/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               to="/discover"
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
+              className="p-2.5 rounded-full bg-[#131625] hover:bg-[#1a1e33] border border-blue-500/20 text-slate-300 hover:text-white transition"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
             </Link>
             <h1 className="font-extrabold text-lg text-white">My Saved Hangouts</h1>
           </div>
 
           <Link
             to="/discover"
-            className="text-xs font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 px-3.5 py-1.5 rounded-xl hover:from-orange-600 hover:to-amber-500 transition shadow"
+            className="btn-cobalt text-xs font-bold text-white px-4 py-2 rounded-full shadow-md"
           >
             Discover More
           </Link>
@@ -61,7 +64,7 @@ export default function SavedActivitiesPage() {
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin text-orange-500 mb-3" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#2B59FF] mb-3" />
             <p className="text-sm">Loading your bookmarked places...</p>
           </div>
         ) : savedItems.length > 0 ? (
@@ -71,17 +74,17 @@ export default function SavedActivitiesPage() {
               return (
                 <div
                   key={item.id}
-                  className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl hover:border-orange-500/30 transition flex flex-col justify-between group"
+                  className="bg-[#111422] border border-blue-500/20 rounded-3xl overflow-hidden shadow-xl hover:border-blue-500/40 transition flex flex-col justify-between group"
                 >
-                  <div className="relative h-48 bg-slate-950 overflow-hidden">
+                  <div className="relative h-48 bg-[#08090E] overflow-hidden">
                     <img
                       src={act.coverImageUrl || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800'}
                       alt={act.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#111422] via-transparent to-transparent" />
                     {act.categoryName && (
-                      <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-900/80 backdrop-blur-md text-orange-400 border border-slate-700/60">
+                      <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#0B0C12]/80 backdrop-blur-md text-blue-400 border border-blue-500/30">
                         {act.categoryName}
                       </span>
                     )}
@@ -91,7 +94,7 @@ export default function SavedActivitiesPage() {
                     <div>
                       <h3 className="font-bold text-white text-base line-clamp-1">{act.title}</h3>
                       <div className="flex items-center gap-3 text-xs text-slate-400 mt-2 font-medium">
-                        <span className="text-emerald-400 font-semibold">
+                        <span className="text-cyan-400 font-semibold">
                           {act.minCost === 0 && act.maxCost === 0 ? 'FREE' : `₹${act.minCost} - ₹${act.maxCost}`}
                         </span>
                         <span>•</span>
@@ -109,7 +112,7 @@ export default function SavedActivitiesPage() {
                         />
                         <button
                           onClick={() => handleRemove(act.id)}
-                          className="text-xs text-rose-400 hover:text-rose-300 p-2 hover:bg-rose-500/10 rounded-xl transition border border-transparent hover:border-rose-500/20"
+                          className="text-xs text-rose-400 hover:text-rose-300 p-2 hover:bg-rose-500/10 rounded-full transition border border-transparent hover:border-rose-500/20"
                           title="Remove bookmark"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -125,8 +128,8 @@ export default function SavedActivitiesPage() {
             })}
           </div>
         ) : (
-          <div className="text-center py-24 bg-slate-900 border border-slate-800 rounded-3xl max-w-md mx-auto p-8 shadow-2xl">
-            <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 flex items-center justify-center mx-auto mb-4">
+          <div className="text-center py-16 bg-[#0B0C12] border border-blue-500/20 rounded-3xl max-w-md mx-auto p-8 shadow-2xl">
+            <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto mb-4">
               <Bookmark className="w-7 h-7" />
             </div>
             <h3 className="text-xl font-bold text-white mb-2">No Saved Hangouts Yet</h3>
@@ -135,7 +138,7 @@ export default function SavedActivitiesPage() {
             </p>
             <Link
               to="/discover"
-              className="py-3 px-6 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 inline-flex items-center gap-2 text-sm"
+              className="btn-cobalt py-3 px-6 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 inline-flex items-center gap-2 text-sm"
             >
               <Compass className="w-4 h-4" />
               <span>Explore Activities</span>

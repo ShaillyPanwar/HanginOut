@@ -185,10 +185,10 @@ export default function MatchResultPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center">
+      <div className="min-h-screen bg-[#08090E] text-slate-100 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-          <p className="text-slate-400 text-sm">Aggregating group consensus...</p>
+          <Loader2 className="w-8 h-8 text-[#2B59FF] animate-spin" />
+          <p className="text-slate-400 text-sm font-medium">Aggregating group consensus...</p>
         </div>
       </div>
     );
@@ -199,23 +199,26 @@ export default function MatchResultPage() {
   const totalMembers = group?.membersCount || matches?.totalMembers || 1;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#08090E] text-slate-100 flex flex-col relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
+      {/* Ambient Cobalt Glow Mesh */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-gradient-radial from-blue-600/20 via-blue-900/5 to-transparent blur-3xl pointer-events-none -z-10" />
+
       {/* Top Navigation */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-slate-800/80 bg-[#0B0C12]/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               to="/groups"
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
+              className="p-2.5 rounded-full bg-[#131625] hover:bg-[#1a1e33] border border-blue-500/20 text-slate-300 hover:text-white transition"
               title="Back to Groups"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
             </Link>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="font-extrabold text-base text-white line-clamp-1">{group?.name}</h1>
-                <span className="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700 flex items-center gap-1">
-                  <Users className="w-3 h-3 text-orange-400" />
+                <span className="text-xs bg-[#131625] text-slate-300 px-2.5 py-0.5 rounded-full border border-blue-500/20 flex items-center gap-1 font-semibold">
+                  <Users className="w-3 h-3 text-blue-400" />
                   <span>{totalMembers}</span>
                 </span>
               </div>
@@ -223,7 +226,7 @@ export default function MatchResultPage() {
                 <span>Code:</span>
                 <button
                   onClick={handleCopyCode}
-                  className="font-mono text-orange-400 hover:text-orange-300 flex items-center gap-1"
+                  className="font-mono text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold"
                 >
                   <span>{group?.inviteCode}</span>
                   {copiedCode ? <Check className="w-3 h-3 text-emerald-400" /> : <Share2 className="w-3 h-3" />}
@@ -235,7 +238,7 @@ export default function MatchResultPage() {
           <div className="flex items-center gap-2">
             <Link
               to={`/groups/${id}/swipe`}
-              className="text-xs bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition shadow-md shadow-orange-500/20 flex items-center gap-1.5"
+              className="btn-cobalt text-xs font-bold px-4 py-2 rounded-full text-white shadow-md flex items-center gap-1.5"
             >
               <Compass className="w-4 h-4" />
               <span>Swipe Deck</span>
@@ -246,15 +249,15 @@ export default function MatchResultPage() {
 
       {/* Main Container */}
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
-        {/* Tab Headers */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-6">
-          <div className="flex items-center gap-3">
+        {/* Tab Headers (Screen 3 style) */}
+        <div className="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-6">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setActiveTab('matches')}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition flex items-center gap-2 ${
                 activeTab === 'matches'
-                  ? 'bg-orange-500/10 text-orange-400 border border-orange-500/30'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-white text-slate-950 shadow-md'
+                  : 'bg-[#131625] text-slate-400 hover:text-white border border-slate-800'
               }`}
             >
               <Trophy className="w-4 h-4" />
@@ -268,16 +271,16 @@ export default function MatchResultPage() {
 
             <button
               onClick={() => setActiveTab('plans')}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition flex items-center gap-2 ${
                 activeTab === 'plans'
-                  ? 'bg-orange-500/10 text-orange-400 border border-orange-500/30'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-white text-slate-950 shadow-md'
+                  : 'bg-[#131625] text-slate-400 hover:text-white border border-slate-800'
               }`}
             >
               <Calendar className="w-4 h-4" />
               <span>Scheduled Hangouts</span>
               {plans.length > 0 && (
-                <span className="bg-slate-800 text-slate-300 text-xs px-2 py-0.5 rounded-full border border-slate-700">
+                <span className="bg-[#1c2138] text-slate-300 text-xs px-2 py-0.5 rounded-full border border-slate-700">
                   {plans.length}
                 </span>
               )}
@@ -287,7 +290,7 @@ export default function MatchResultPage() {
           {activeTab === 'matches' && unanimousList.length > 0 && (
             <button
               onClick={triggerConfetti}
-              className="hidden sm:flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1.5 rounded-lg transition"
+              className="hidden sm:flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-full transition font-semibold"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Celebrate Matches</span>
@@ -302,7 +305,7 @@ export default function MatchResultPage() {
             {unanimousList.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <div className="w-8 h-8 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
@@ -317,32 +320,32 @@ export default function MatchResultPage() {
                     return (
                       <div
                         key={act.id}
-                        className="relative rounded-2xl overflow-hidden border-2 border-emerald-500/50 bg-gradient-to-b from-slate-900 to-slate-900/90 shadow-xl shadow-emerald-500/10 flex flex-col"
+                        className="relative rounded-3xl overflow-hidden border-2 border-blue-500/40 bg-[#111422] shadow-2xl shadow-blue-500/10 flex flex-col"
                       >
                         {/* 100% Badge */}
-                        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-emerald-500 text-slate-950 font-extrabold text-xs px-2.5 py-1 rounded-full shadow-lg">
+                        <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 btn-cobalt text-white font-extrabold text-xs px-3 py-1 rounded-full shadow-lg">
                           <Sparkles className="w-3.5 h-3.5 fill-current" />
                           <span>100% MATCH</span>
                         </div>
 
                         {/* Image Banner */}
-                        <div className="h-44 w-full bg-slate-800 relative">
+                        <div className="h-44 w-full bg-[#08090E] relative">
                           <img
                             src={act.coverImageUrl || act.imageUrl || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800'}
                             alt={act.title}
                             className="w-full h-full object-cover"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/30" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#111422] via-transparent to-black/30" />
                           <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
                             <div>
-                              <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-orange-500/90 text-slate-950 uppercase tracking-wider">
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/90 text-white uppercase tracking-wider">
                                 {act.categoryName || 'Activity'}
                               </span>
                               <h3 className="text-lg font-bold text-white mt-1 drop-shadow-md">{act.title}</h3>
                             </div>
                             <div className="text-right">
                               <span className="text-xs text-slate-300 block">Per person</span>
-                              <span className="text-base font-extrabold text-orange-400">
+                              <span className="text-base font-extrabold text-cyan-400">
                                 ₹{act.estimatedCostPerPerson ?? act.price ?? 'Free'}
                               </span>
                             </div>
@@ -350,11 +353,11 @@ export default function MatchResultPage() {
                         </div>
 
                         {/* Card Content */}
-                        <div className="p-4 flex-1 flex flex-col justify-between">
+                        <div className="p-5 flex-1 flex flex-col justify-between">
                           <div>
                             {act.spot && (
                               <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-2">
-                                <MapPin className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
+                                <MapPin className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
                                 <span className="line-clamp-1">{act.spot.name} • {act.spot.neighborhood || act.spot.city}</span>
                               </div>
                             )}
@@ -363,7 +366,7 @@ export default function MatchResultPage() {
                             </p>
 
                             {/* Member Votes Roster */}
-                            <div className="bg-slate-950/60 rounded-xl p-2.5 border border-slate-800/80 mb-4">
+                            <div className="bg-[#08090E] rounded-2xl p-3 border border-slate-800 mb-4">
                               <span className="text-[11px] font-semibold text-slate-400 block mb-1.5">
                                 Group Votes ({match.likesCount}/{match.totalMembers}):
                               </span>
@@ -371,9 +374,9 @@ export default function MatchResultPage() {
                                 {match.memberVotes?.map((vote) => (
                                   <span
                                     key={vote.userId}
-                                    className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium"
+                                    className="inline-flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-medium"
                                   >
-                                    <CheckCircle2 className="w-3 h-3" />
+                                    <CheckCircle2 className="w-3 h-3 text-cyan-400" />
                                     <span>{vote.userName}</span>
                                   </span>
                                 ))}
@@ -382,7 +385,7 @@ export default function MatchResultPage() {
                           </div>
 
                           {/* Action Buttons: Feedback & Schedule */}
-                          <div className="space-y-2 mt-2">
+                          <div className="space-y-2.5 mt-2">
                             <FeedbackTriggerButton
                               activity={act}
                               groupId={id}
@@ -390,7 +393,7 @@ export default function MatchResultPage() {
                             />
                             <button
                               onClick={() => handleOpenScheduleModal(act)}
-                              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 text-slate-950 font-extrabold text-sm transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
+                              className="btn-cobalt w-full py-3 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 text-sm flex items-center justify-center gap-2"
                             >
                               <Calendar className="w-4 h-4" />
                               <span>Schedule Hangout</span>
@@ -419,17 +422,17 @@ export default function MatchResultPage() {
               </div>
 
               {consensusList.length === 0 && unanimousList.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-slate-800 p-12 text-center bg-slate-900/30">
-                  <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mx-auto mb-4">
+                <div className="rounded-3xl border border-dashed border-blue-500/20 p-12 text-center bg-[#0B0C12]/50">
+                  <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mx-auto mb-4">
                     <Compass className="w-7 h-7" />
                   </div>
                   <h3 className="text-base font-bold text-white mb-1">No Matches Recorded Yet</h3>
                   <p className="text-xs text-slate-400 max-w-sm mx-auto mb-6">
-                    Invite group members to join with code <span className="text-orange-400 font-mono font-bold">{group?.inviteCode}</span> and start swiping to discover agreed spots!
+                    Invite group members to join with code <span className="text-blue-400 font-mono font-bold">{group?.inviteCode}</span> and start swiping to discover agreed spots!
                   </p>
                   <Link
                     to={`/groups/${id}/swipe`}
-                    className="inline-flex items-center gap-2 text-xs bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition"
+                    className="btn-cobalt inline-flex items-center gap-2 text-xs font-bold px-5 py-2.5 rounded-full transition shadow-md shadow-blue-500/30"
                   >
                     <Compass className="w-4 h-4" />
                     <span>Start Swiping Now</span>
@@ -443,7 +446,7 @@ export default function MatchResultPage() {
                     return (
                       <div
                         key={act.id}
-                        className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4 hover:border-slate-700 transition flex flex-col justify-between"
+                        className="rounded-3xl border border-blue-500/15 bg-[#111422] p-5 hover:border-blue-500/35 transition flex flex-col justify-between shadow-xl"
                       >
                         <div>
                           {/* Percentage header */}
@@ -452,8 +455,8 @@ export default function MatchResultPage() {
                             <span
                               className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full ${
                                 percent >= 66
-                                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                                  : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                                  ? 'bg-blue-500/20 text-cyan-300 border border-blue-500/30'
+                                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                               }`}
                             >
                               {percent}% Agreed ({match.likesCount}/{match.totalMembers})
@@ -461,10 +464,10 @@ export default function MatchResultPage() {
                           </div>
 
                           {/* Progress bar */}
-                          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-4">
+                          <div className="w-full bg-[#08090E] h-2.5 rounded-full overflow-hidden mb-4 border border-slate-800">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${
-                                percent >= 66 ? 'bg-gradient-to-r from-emerald-500 to-teal-400' : 'bg-gradient-to-r from-amber-500 to-orange-400'
+                                percent >= 66 ? 'bg-gradient-to-r from-[#2B59FF] to-cyan-400 shadow-glow-blue' : 'bg-gradient-to-r from-amber-500 to-orange-400'
                               }`}
                               style={{ width: `${percent}%` }}
                             />
@@ -476,12 +479,12 @@ export default function MatchResultPage() {
                               <h3 className="font-bold text-white text-base leading-snug">{act.title}</h3>
                               {act.spot && (
                                 <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                                  <MapPin className="w-3 h-3 text-orange-400" />
+                                  <MapPin className="w-3 h-3 text-blue-400" />
                                   <span>{act.spot.name} • {act.spot.neighborhood || act.spot.city}</span>
                                 </p>
                               )}
                             </div>
-                            <span className="text-sm font-bold text-orange-400 whitespace-nowrap">
+                            <span className="text-sm font-bold text-cyan-400 whitespace-nowrap">
                               ₹{act.estimatedCostPerPerson ?? act.price ?? 'Free'}
                             </span>
                           </div>
@@ -491,14 +494,14 @@ export default function MatchResultPage() {
                             {match.memberVotes?.map((vote) => (
                               <span
                                 key={vote.userId}
-                                className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-medium ${
+                                className={`inline-flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full font-medium ${
                                   vote.action === 'LIKE'
-                                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                    ? 'bg-blue-500/10 text-cyan-300 border border-blue-500/20'
                                     : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                                 }`}
                               >
                                 {vote.action === 'LIKE' ? (
-                                  <CheckCircle2 className="w-3 h-3" />
+                                  <CheckCircle2 className="w-3 h-3 text-cyan-400" />
                                 ) : (
                                   <XCircle className="w-3 h-3" />
                                 )}
@@ -517,9 +520,9 @@ export default function MatchResultPage() {
                           />
                           <button
                             onClick={() => handleOpenScheduleModal(act)}
-                            className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs transition border border-slate-700 flex items-center justify-center gap-1.5"
+                            className="btn-white w-full py-2.5 rounded-full font-bold text-xs text-slate-950 shadow-md transition flex items-center justify-center gap-1.5"
                           >
-                            <Calendar className="w-3.5 h-3.5 text-orange-400" />
+                            <Calendar className="w-3.5 h-3.5 text-slate-950" />
                             <span>Schedule Hangout</span>
                           </button>
                         </div>
@@ -543,7 +546,7 @@ export default function MatchResultPage() {
             </div>
 
             {plans.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-slate-800 p-12 text-center bg-slate-900/30">
+              <div className="rounded-3xl border border-dashed border-blue-500/20 p-12 text-center bg-[#0B0C12]/50">
                 <Calendar className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                 <h3 className="text-base font-bold text-white mb-1">No Hangouts Scheduled Yet</h3>
                 <p className="text-xs text-slate-400 max-w-sm mx-auto mb-6">
@@ -551,7 +554,7 @@ export default function MatchResultPage() {
                 </p>
                 <button
                   onClick={() => setActiveTab('matches')}
-                  className="text-xs bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold px-4 py-2 rounded-xl transition"
+                  className="btn-cobalt text-xs font-bold px-5 py-2.5 rounded-full transition shadow-md shadow-blue-500/30"
                 >
                   View Agreed Activities
                 </button>
@@ -565,22 +568,22 @@ export default function MatchResultPage() {
                   return (
                     <div
                       key={plan.id}
-                      className={`rounded-2xl border p-4 sm:p-5 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
+                      className={`rounded-3xl border p-5 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl ${
                         isCompleted
-                          ? 'border-emerald-500/30 bg-emerald-950/10'
+                          ? 'border-emerald-500/30 bg-emerald-950/15'
                           : isCancelled
-                          ? 'border-slate-800 bg-slate-900/30 opacity-60'
-                          : 'border-slate-800 bg-slate-900/70 hover:border-slate-700'
+                          ? 'border-slate-800 bg-[#0B0C12]/40 opacity-60'
+                          : 'border-blue-500/20 bg-[#111422] hover:border-blue-500/40'
                       }`}
                     >
                       <div className="flex items-start gap-4">
                         <div
-                          className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center font-bold flex-shrink-0 ${
+                          className={`w-12 h-12 rounded-2xl flex flex-col items-center justify-center font-bold flex-shrink-0 ${
                             isCompleted
                               ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                               : isCancelled
                               ? 'bg-slate-800 text-slate-500'
-                              : 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                              : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                           }`}
                         >
                           <Calendar className="w-5 h-5 mb-0.5" />
@@ -592,12 +595,12 @@ export default function MatchResultPage() {
                         <div>
                           <div className="flex items-center gap-2 mb-1">
                             <span
-                              className={`text-[11px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                              className={`text-[11px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
                                 isCompleted
                                   ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                                   : isCancelled
                                   ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
-                                  : 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                                  : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                               }`}
                             >
                               {plan.status}
@@ -614,7 +617,7 @@ export default function MatchResultPage() {
 
                           {plan.spot && (
                             <p className="text-xs text-slate-400 flex items-center gap-1 mt-1">
-                              <MapPin className="w-3 h-3 text-orange-400 flex-shrink-0" />
+                              <MapPin className="w-3 h-3 text-blue-400 flex-shrink-0" />
                               <span>{plan.spot.name} • {plan.spot.address || plan.spot.city}</span>
                             </p>
                           )}
@@ -626,7 +629,7 @@ export default function MatchResultPage() {
                         {!isCompleted && !isCancelled && (
                           <button
                             onClick={() => handleUpdatePlanStatus(plan.id, 'COMPLETED')}
-                            className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition flex items-center gap-1"
+                            className="text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition flex items-center gap-1"
                             title="Mark as completed"
                           >
                             <CheckCircle className="w-3.5 h-3.5" />
@@ -637,7 +640,7 @@ export default function MatchResultPage() {
                         {!isCancelled && (
                           <button
                             onClick={() => handleUpdatePlanStatus(plan.id, 'CANCELLED')}
-                            className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                            className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#131625] hover:bg-[#1a1e33] text-slate-300 border border-slate-800 transition"
                             title="Cancel hangout"
                           >
                             Cancel
@@ -646,7 +649,7 @@ export default function MatchResultPage() {
 
                         <button
                           onClick={() => handleDeletePlan(plan.id)}
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition"
+                          className="p-1.5 rounded-full text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
                           title="Delete plan"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -663,22 +666,22 @@ export default function MatchResultPage() {
 
       {/* SCHEDULING MODAL */}
       {selectedActivity && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <h2 className="text-lg font-bold text-white mb-1">Schedule Hangout</h2>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0B0C12] border border-blue-500/20 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
+            <h2 className="text-xl font-bold text-white mb-1">Schedule Hangout</h2>
             <p className="text-xs text-slate-400 mb-4">
-              Coordinate date and time for <span className="text-orange-400 font-semibold">{selectedActivity.title}</span>
+              Coordinate date and time for <span className="text-blue-400 font-semibold">{selectedActivity.title}</span>
             </p>
 
             {scheduleError && (
-              <div className="p-3 mb-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
+              <div className="p-3 mb-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 <span>{scheduleError}</span>
               </div>
             )}
 
             {scheduleSuccess && (
-              <div className="p-3 mb-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2">
+              <div className="p-3 mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
                 <span>{scheduleSuccess}</span>
               </div>
@@ -693,7 +696,7 @@ export default function MatchResultPage() {
                   required
                   value={planDate}
                   onChange={(e) => setPlanDate(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 focus:border-orange-500 rounded-xl px-3 py-2 text-sm text-slate-100 outline-none"
+                  className="w-full bg-[#08090E] border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-2xl px-4 py-2.5 text-sm text-slate-100 outline-none"
                 />
               </div>
 
@@ -704,12 +707,12 @@ export default function MatchResultPage() {
                   required
                   value={planTime}
                   onChange={(e) => setPlanTime(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 focus:border-orange-500 rounded-xl px-3 py-2 text-sm text-slate-100 outline-none"
+                  className="w-full bg-[#08090E] border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-2xl px-4 py-2.5 text-sm text-slate-100 outline-none"
                 />
               </div>
 
               {selectedActivity.spot && (
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 text-xs">
+                <div className="p-3.5 rounded-2xl bg-[#08090E] border border-slate-800/80 text-xs">
                   <span className="text-slate-400 block mb-0.5">Location</span>
                   <span className="font-semibold text-white">{selectedActivity.spot.name}</span>
                   <p className="text-slate-400 text-[11px] mt-0.5">
@@ -718,19 +721,19 @@ export default function MatchResultPage() {
                 </div>
               )}
 
-              <div className="flex items-center justify-end gap-2 pt-2">
+              <div className="flex items-center justify-end gap-2.5 pt-2">
                 <button
                   type="button"
                   onClick={() => setSelectedActivity(null)}
                   disabled={scheduling}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                  className="btn-white px-5 py-2.5 rounded-full text-xs font-bold text-slate-950 transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={scheduling}
-                  className="px-5 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 text-slate-950 transition shadow-md shadow-orange-500/20 flex items-center gap-1.5"
+                  className="btn-cobalt px-6 py-2.5 rounded-full text-xs font-extrabold text-white transition shadow-md shadow-blue-500/30 flex items-center gap-1.5"
                 >
                   {scheduling && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   <span>Confirm Plan</span>
@@ -743,9 +746,9 @@ export default function MatchResultPage() {
 
       {/* Delete Plan Confirmation Modal */}
       {deletePlanConfirmId && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center animate-fade-in">
-            <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mx-auto mb-3">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-[#0B0C12] border border-blue-500/20 rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl text-center animate-fade-in">
+            <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mx-auto mb-3">
               <Trash2 className="w-6 h-6" />
             </div>
 
@@ -759,7 +762,7 @@ export default function MatchResultPage() {
                 type="button"
                 onClick={() => setDeletePlanConfirmId(null)}
                 disabled={deletingPlan}
-                className="flex-1 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition"
+                className="btn-white flex-1 py-2.5 rounded-full text-xs font-bold text-slate-950 transition"
               >
                 Keep Plan
               </button>
@@ -767,7 +770,7 @@ export default function MatchResultPage() {
                 type="button"
                 onClick={executeDeletePlan}
                 disabled={deletingPlan}
-                className="flex-1 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 transition shadow-lg shadow-rose-600/20 flex items-center justify-center gap-1.5 disabled:opacity-50"
+                className="flex-1 py-2.5 rounded-full text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 transition shadow-lg shadow-rose-600/20 flex items-center justify-center gap-1.5 disabled:opacity-50"
               >
                 {deletingPlan && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 <span>Yes, Delete</span>

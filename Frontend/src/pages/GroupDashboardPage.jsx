@@ -77,29 +77,34 @@ export default function GroupDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#08090E] text-slate-100 flex flex-col relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
+      {/* Ambient Cobalt Glow Mesh */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[750px] h-[450px] bg-gradient-radial from-blue-600/20 via-blue-900/5 to-transparent blur-3xl pointer-events-none -z-10" />
+
       {/* Top Navbar */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-slate-800/80 bg-[#0B0C12]/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-orange-500 to-amber-400 flex items-center justify-center font-bold text-slate-950 text-sm shadow">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[#2B59FF] to-[#60A5FA] flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform">
               HO
             </div>
-            <span className="font-bold text-lg text-white">Hangin<span className="text-orange-500">Out</span></span>
+            <span className="font-extrabold text-lg tracking-tight text-white">
+              Hangin<span className="text-[#2B59FF]">Out</span>
+            </span>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <button
               onClick={() => { setModalError(''); setShowJoinModal(true); }}
-              className="text-xs font-semibold px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5"
+              className="btn-white text-xs font-bold px-4 py-2 rounded-full text-slate-950 shadow-md transition flex items-center gap-1.5"
             >
-              <UserPlus className="w-4 h-4 text-orange-400" />
+              <UserPlus className="w-4 h-4 text-slate-950" />
               <span>Join with Code</span>
             </button>
 
             <button
               onClick={() => { setModalError(''); setShowCreateModal(true); }}
-              className="text-xs font-bold px-3.5 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 text-slate-950 hover:from-orange-600 hover:to-amber-500 transition shadow shadow-orange-500/20 flex items-center gap-1.5"
+              className="btn-cobalt text-xs font-bold px-4 py-2 rounded-full text-white shadow-lg shadow-blue-500/35 transition flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4 stroke-[3]" />
               <span>New Group</span>
@@ -121,7 +126,7 @@ export default function GroupDashboardPage() {
 
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin text-orange-500 mb-3" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#2B59FF] mb-3" />
             <p className="text-sm font-medium">Loading your groups...</p>
           </div>
         ) : groups.length > 0 ? (
@@ -129,7 +134,7 @@ export default function GroupDashboardPage() {
             {groups.map((group) => (
               <div
                 key={group.id}
-                className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:border-orange-500/30 transition flex flex-col justify-between"
+                className="bg-[#111422] border border-blue-500/20 rounded-3xl p-6 shadow-xl hover:border-blue-500/40 transition flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-start justify-between gap-3 mb-4">
@@ -138,21 +143,21 @@ export default function GroupDashboardPage() {
                       <span className="text-xs text-slate-400">Created by {group.creatorName}</span>
                     </div>
 
-                    <span className="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span className="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20">
                       {group.status}
                     </span>
                   </div>
 
                   {/* Invite Code Box */}
-                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between mb-5">
+                  <div className="p-3.5 rounded-2xl bg-[#08090E] border border-slate-800 flex items-center justify-between mb-5">
                     <div>
                       <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Invite Code</span>
-                      <span className="font-mono font-extrabold text-base text-orange-400">{group.inviteCode}</span>
+                      <span className="font-mono font-extrabold text-base text-blue-400">{group.inviteCode}</span>
                     </div>
 
                     <button
                       onClick={() => copyToClipboard(group.inviteCode)}
-                      className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition flex items-center gap-1.5"
+                      className="px-3.5 py-1.5 rounded-full bg-[#131625] hover:bg-[#1c2138] border border-blue-500/20 text-xs font-semibold text-slate-200 transition flex items-center gap-1.5"
                     >
                       {copiedCode === group.inviteCode ? (
                         <>
@@ -177,32 +182,32 @@ export default function GroupDashboardPage() {
                       {group.members?.map((m) => (
                         <div
                           key={m.userId}
-                          className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-medium text-slate-300 flex items-center gap-1.5"
+                          className="px-3 py-1 rounded-full bg-[#131625] border border-slate-800 text-xs font-medium text-slate-300 flex items-center gap-1.5"
                         >
-                          <div className="w-2 h-2 rounded-full bg-orange-400" />
+                          <div className="w-2 h-2 rounded-full bg-[#2B59FF]" />
                           <span>{m.name}</span>
-                          {m.isCreator && <span className="text-[10px] text-orange-400 font-bold">(Host)</span>}
+                          {m.isCreator && <span className="text-[10px] text-blue-400 font-bold">(Host)</span>}
                         </div>
                       ))}
                     </div>
                   </div>
                 </div>
 
-                {/* Group Action Buttons */}
-                <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-800">
+                {/* Group Action Buttons (Screen 3 style dual buttons) */}
+                <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-800/80">
                   <Link
                     to={`/groups/${group.id}/swipe`}
-                    className="py-2.5 px-4 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow text-xs flex items-center justify-center gap-1.5"
+                    className="btn-cobalt py-2.5 px-4 rounded-full font-bold text-white shadow-md text-xs flex items-center justify-center gap-1.5"
                   >
-                    <Heart className="w-4 h-4 fill-slate-950" />
+                    <Heart className="w-4 h-4 fill-white" />
                     <span>Swipe Deck</span>
                   </Link>
 
                   <Link
                     to={`/groups/${group.id}/matches`}
-                    className="py-2.5 px-4 rounded-xl font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 transition text-xs flex items-center justify-center gap-1.5"
+                    className="btn-white py-2.5 px-4 rounded-full font-bold text-slate-950 shadow-md text-xs flex items-center justify-center gap-1.5"
                   >
-                    <Sparkles className="w-4 h-4 text-orange-400" />
+                    <Sparkles className="w-4 h-4 text-slate-950" />
                     <span>View Matches</span>
                   </Link>
                 </div>
@@ -210,8 +215,8 @@ export default function GroupDashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md mx-auto shadow-2xl">
-            <div className="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 flex items-center justify-center mx-auto mb-4">
+          <div className="text-center py-20 bg-[#0B0C12] border border-blue-500/20 rounded-3xl p-8 max-w-md mx-auto shadow-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold text-white mb-2">No Groups Yet</h3>
@@ -221,16 +226,16 @@ export default function GroupDashboardPage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 onClick={() => { setModalError(''); setShowCreateModal(true); }}
-                className="py-3 px-5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 text-sm flex items-center justify-center gap-2"
+                className="btn-cobalt py-3 px-5 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 text-sm flex items-center justify-center gap-2"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4 stroke-[3]" />
                 <span>Create Group</span>
               </button>
               <button
                 onClick={() => { setModalError(''); setShowJoinModal(true); }}
-                className="py-3 px-5 rounded-xl font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition text-sm flex items-center justify-center gap-2"
+                className="btn-white py-3 px-5 rounded-full font-bold text-slate-950 shadow-md text-sm flex items-center justify-center gap-2"
               >
-                <UserPlus className="w-4 h-4 text-orange-400" />
+                <UserPlus className="w-4 h-4 text-slate-950" />
                 <span>Join with Code</span>
               </button>
             </div>
@@ -239,27 +244,27 @@ export default function GroupDashboardPage() {
 
         {/* Create Modal */}
         {showCreateModal && (
-          <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl animate-fade-in">
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+            <div className="bg-[#0B0C12] border border-blue-500/20 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl animate-fade-in">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-white">Create Hangout Group</h3>
                 <button
                   onClick={() => setShowCreateModal(false)}
-                  className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-[#131625]"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {modalError && (
-                <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
+                <div className="mb-4 p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
                   {modalError}
                 </div>
               )}
 
               <form onSubmit={handleCreateGroup} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
                     Group Name
                   </label>
                   <input
@@ -268,14 +273,14 @@ export default function GroupDashboardPage() {
                     value={groupName}
                     onChange={(e) => setGroupName(e.target.value)}
                     placeholder="e.g. Weekend Foodies, Delhi Explorers"
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                    className="w-full px-4 py-3 rounded-2xl bg-[#08090E] border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={modalLoading}
-                  className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 disabled:opacity-50 text-sm flex items-center justify-center gap-2"
+                  className="btn-cobalt w-full py-3.5 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 disabled:opacity-50 text-sm flex items-center justify-center gap-2"
                 >
                   {modalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Create & Generate Code</span>}
                 </button>
@@ -286,27 +291,27 @@ export default function GroupDashboardPage() {
 
         {/* Join Modal */}
         {showJoinModal && (
-          <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl animate-fade-in">
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+            <div className="bg-[#0B0C12] border border-blue-500/20 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl animate-fade-in">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-white">Join Friend's Group</h3>
                 <button
                   onClick={() => setShowJoinModal(false)}
-                  className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-[#131625]"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {modalError && (
-                <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
+                <div className="mb-4 p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
                   {modalError}
                 </div>
               )}
 
               <form onSubmit={handleJoinGroup} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
                     Invite Code
                   </label>
                   <input
@@ -316,14 +321,14 @@ export default function GroupDashboardPage() {
                     onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                     placeholder="e.g. HNG4821"
                     maxLength={10}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-mono uppercase tracking-wider text-center"
+                    className="w-full px-4 py-3 rounded-2xl bg-[#08090E] border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm font-mono uppercase tracking-wider text-center"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={modalLoading}
-                  className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 disabled:opacity-50 text-sm flex items-center justify-center gap-2"
+                  className="btn-cobalt w-full py-3.5 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 disabled:opacity-50 text-sm flex items-center justify-center gap-2"
                 >
                   {modalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Join Group</span>}
                 </button>

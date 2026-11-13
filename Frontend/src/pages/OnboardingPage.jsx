@@ -88,7 +88,10 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center px-4 py-12">
+    <div className="min-h-screen bg-[#08090E] text-slate-100 flex flex-col justify-center px-4 py-12 relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
+      {/* Ambient Cobalt Glow Mesh */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[450px] bg-gradient-radial from-blue-600/20 via-blue-900/5 to-transparent blur-3xl pointer-events-none -z-10" />
+
       <div className="max-w-xl mx-auto w-full">
         {/* Progress Bar */}
         <div className="mb-8">
@@ -96,20 +99,20 @@ export default function OnboardingPage() {
             <span>Step {step} of 3</span>
             <span>{step === 1 ? 'Budget' : step === 2 ? 'Vibe & Time' : 'Interests'}</span>
           </div>
-          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-[#131625] h-2 rounded-full overflow-hidden border border-slate-800">
             <div
-              className="bg-gradient-to-r from-orange-500 to-amber-400 h-full transition-all duration-300"
+              className="bg-gradient-to-r from-[#2B59FF] to-[#60A5FA] h-full transition-all duration-300"
               style={{ width: `${(step / 3) * 100}%` }}
             />
           </div>
         </div>
 
         {/* Wizard Card Container */}
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl">
+        <div className="bg-[#0B0C12] border border-blue-500/20 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-md">
           {/* STEP 1: BUDGET */}
           {step === 1 && (
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-medium mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-3">
                 <IndianRupee className="w-3.5 h-3.5" />
                 <span>Student Affordability</span>
               </div>
@@ -127,8 +130,8 @@ export default function OnboardingPage() {
                       onClick={() => setMaxBudget(opt.value)}
                       className={`w-full p-4 rounded-2xl border text-left flex items-center justify-between transition-all ${
                         isSelected
-                          ? 'border-orange-500 bg-orange-500/10 shadow-lg shadow-orange-500/10'
-                          : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'
+                          ? 'border-[#2B59FF] bg-blue-500/10 shadow-glow-blue'
+                          : 'border-slate-800 bg-[#131625]/70 hover:border-blue-500/30 hover:bg-[#131625]'
                       }`}
                     >
                       <div>
@@ -137,10 +140,10 @@ export default function OnboardingPage() {
                       </div>
                       <div
                         className={`w-6 h-6 rounded-full border flex items-center justify-center ${
-                          isSelected ? 'border-orange-500 bg-orange-500 text-slate-950' : 'border-slate-700'
+                          isSelected ? 'border-[#2B59FF] bg-[#2B59FF] text-white shadow-sm' : 'border-slate-700'
                         }`}
                       >
-                        {isSelected && <Check className="w-4 h-4 stroke-[3]" />}
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                     </button>
                   );
@@ -152,7 +155,7 @@ export default function OnboardingPage() {
           {/* STEP 2: DURATION & GROUP TYPE */}
           {step === 2 && (
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-medium mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-3">
                 <Clock className="w-3.5 h-3.5" />
                 <span>Time & Social Style</span>
               </div>
@@ -174,10 +177,10 @@ export default function OnboardingPage() {
                         <button
                           key={opt.value}
                           onClick={() => setPreferredDuration(opt.value)}
-                          className={`p-3.5 rounded-xl border text-left transition ${
+                          className={`p-3.5 rounded-2xl border text-left transition ${
                             isSelected
-                              ? 'border-orange-500 bg-orange-500/10 text-white'
-                              : 'border-slate-800 bg-slate-950/60 text-slate-300 hover:border-slate-700'
+                              ? 'border-[#2B59FF] bg-blue-500/10 text-white shadow-sm'
+                              : 'border-slate-800 bg-[#131625]/70 text-slate-300 hover:border-slate-700 hover:bg-[#131625]'
                           }`}
                         >
                           <span className="text-lg mr-1.5">{opt.icon}</span>
@@ -200,10 +203,10 @@ export default function OnboardingPage() {
                         <button
                           key={opt.value}
                           onClick={() => setPreferredGroupType(opt.value)}
-                          className={`w-full p-3.5 rounded-xl border text-left flex items-center justify-between transition ${
+                          className={`w-full p-3.5 rounded-2xl border text-left flex items-center justify-between transition ${
                             isSelected
-                              ? 'border-orange-500 bg-orange-500/10'
-                              : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'
+                              ? 'border-[#2B59FF] bg-blue-500/10 shadow-sm'
+                              : 'border-slate-800 bg-[#131625]/70 hover:border-slate-700 hover:bg-[#131625]'
                           }`}
                         >
                           <div>
@@ -212,7 +215,7 @@ export default function OnboardingPage() {
                           </div>
                           <div
                             className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                              isSelected ? 'border-orange-500 bg-orange-500 text-slate-950' : 'border-slate-700'
+                              isSelected ? 'border-[#2B59FF] bg-[#2B59FF] text-white' : 'border-slate-700'
                             }`}
                           >
                             {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -229,7 +232,7 @@ export default function OnboardingPage() {
           {/* STEP 3: INTERESTS */}
           {step === 3 && (
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-medium mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-3">
                 <Compass className="w-3.5 h-3.5" />
                 <span>Interests & Vibes</span>
               </div>
@@ -240,7 +243,7 @@ export default function OnboardingPage() {
 
               {loadingCats ? (
                 <div className="py-12 flex justify-center text-slate-400">
-                  <Loader2 className="w-6 h-6 animate-spin text-orange-500" />
+                  <Loader2 className="w-6 h-6 animate-spin text-[#2B59FF]" />
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
@@ -252,15 +255,15 @@ export default function OnboardingPage() {
                         onClick={() => toggleCategory(cat.id)}
                         className={`p-3.5 rounded-2xl border text-left transition-all ${
                           isSelected
-                            ? 'border-orange-500 bg-orange-500/10 shadow'
-                            : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'
+                            ? 'border-[#2B59FF] bg-blue-500/10 shadow-glow-blue'
+                            : 'border-slate-800 bg-[#131625]/70 hover:border-slate-700 hover:bg-[#131625]'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-bold text-sm text-white line-clamp-1">{cat.name}</span>
                           <div
                             className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                              isSelected ? 'border-orange-500 bg-orange-500 text-slate-950' : 'border-slate-700'
+                              isSelected ? 'border-[#2B59FF] bg-[#2B59FF] text-white' : 'border-slate-700'
                             }`}
                           >
                             {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
@@ -276,11 +279,11 @@ export default function OnboardingPage() {
           )}
 
           {/* Wizard Footer Controls */}
-          <div className="mt-8 pt-6 border-t border-slate-800 flex items-center justify-between">
+          <div className="mt-8 pt-6 border-t border-slate-800/80 flex items-center justify-between">
             {step > 1 ? (
               <button
                 onClick={() => setStep(step - 1)}
-                className="py-2.5 px-4 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 text-sm font-semibold"
+                className="py-2.5 px-5 rounded-full text-slate-950 font-bold bg-white hover:bg-slate-200 shadow-md transition flex items-center gap-1.5 text-xs"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -292,7 +295,7 @@ export default function OnboardingPage() {
             {step < 3 ? (
               <button
                 onClick={() => setStep(step + 1)}
-                className="py-2.5 px-6 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 flex items-center gap-2 text-sm"
+                className="btn-cobalt py-3 px-6 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 flex items-center gap-2 text-sm"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4" />
@@ -301,7 +304,7 @@ export default function OnboardingPage() {
               <button
                 onClick={handleFinish}
                 disabled={saving}
-                className="py-2.5 px-6 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 transition shadow-lg shadow-orange-500/20 flex items-center gap-2 text-sm disabled:opacity-50"
+                className="btn-cobalt py-3 px-6 rounded-full font-bold text-white shadow-lg shadow-blue-500/35 flex items-center gap-2 text-sm disabled:opacity-50"
               >
                 {saving ? (
                   <>

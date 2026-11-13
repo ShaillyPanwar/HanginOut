@@ -51,13 +51,13 @@ export default function FeedbackTriggerButton({
             e.stopPropagation();
             setIsModalOpen(true);
           }}
-          className={`w-full py-2.5 px-4 rounded-xl border border-dashed text-xs font-semibold flex items-center justify-center gap-2 transition group ${
+          className={`w-full py-2.5 px-4 rounded-2xl border border-dashed text-xs font-semibold flex items-center justify-center gap-2 transition group ${
             hasFeedback
-              ? 'border-orange-500/50 bg-orange-500/10 text-orange-300 hover:bg-orange-500/20'
-              : 'border-slate-700/80 bg-slate-900/60 text-slate-400 hover:text-orange-400 hover:border-orange-500/40 hover:bg-slate-800'
+              ? 'border-blue-500/50 bg-blue-500/10 text-cyan-300 hover:bg-blue-500/20'
+              : 'border-slate-800 bg-[#131625]/70 text-slate-300 hover:text-white hover:border-blue-500/40 hover:bg-[#131625]'
           } ${className}`}
         >
-          <MessageSquarePlus className="w-3.5 h-3.5 text-orange-400 group-hover:scale-110 transition-transform" />
+          <MessageSquarePlus className="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform" />
           <span>
             {hasFeedback
               ? `Already visited? Edit feedback (${myFeedback.rating}★)`
@@ -87,10 +87,10 @@ export default function FeedbackTriggerButton({
             e.stopPropagation();
             setIsModalOpen(true);
           }}
-          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border ${
+          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 border ${
             hasFeedback
-              ? 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20'
-              : 'bg-slate-800/80 hover:bg-slate-800 border-slate-700 text-slate-300 hover:text-white hover:border-orange-500/40'
+              ? 'bg-blue-500/10 border-blue-500/30 text-cyan-300 hover:bg-blue-500/20'
+              : 'bg-[#131625] hover:bg-[#1a1e33] border-slate-800 text-slate-300 hover:text-white hover:border-blue-500/40'
           } ${className}`}
         >
           {hasFeedback ? (
@@ -100,7 +100,7 @@ export default function FeedbackTriggerButton({
             </>
           ) : (
             <>
-              <MessageSquarePlus className="w-3.5 h-3.5 text-orange-400" />
+              <MessageSquarePlus className="w-3.5 h-3.5 text-blue-400" />
               <span>Add feedback</span>
             </>
           )}
@@ -128,10 +128,10 @@ export default function FeedbackTriggerButton({
             e.stopPropagation();
             setIsModalOpen(true);
           }}
-          className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 border ${
+          className={`w-full py-2.5 px-4 rounded-full text-xs font-bold transition flex items-center justify-center gap-1.5 border ${
             hasFeedback
-              ? 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20'
-              : 'bg-slate-800/80 hover:bg-slate-800 border-slate-700 text-slate-300 hover:text-white hover:border-orange-500/40'
+              ? 'bg-blue-500/10 border-blue-500/30 text-cyan-300 hover:bg-blue-500/20'
+              : 'bg-[#131625] hover:bg-[#1a1e33] border-slate-800 text-slate-300 hover:text-white hover:border-blue-500/40'
           } ${className}`}
         >
           {hasFeedback ? (
@@ -141,7 +141,7 @@ export default function FeedbackTriggerButton({
             </>
           ) : (
             <>
-              <MessageSquarePlus className="w-3.5 h-3.5 text-orange-400" />
+              <MessageSquarePlus className="w-3.5 h-3.5 text-blue-400" />
               <span>Add feedback</span>
             </>
           )}
@@ -165,9 +165,9 @@ export default function FeedbackTriggerButton({
       <button
         type="button"
         onClick={() => setIsModalOpen(true)}
-        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-medium border border-slate-700 bg-slate-800 hover:border-orange-500/40 text-slate-300 hover:text-white transition ${className}`}
+        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border border-slate-800 bg-[#131625] hover:border-blue-500/40 text-slate-300 hover:text-white transition ${className}`}
       >
-        <Star className="w-3.5 h-3.5 text-orange-400" />
+        <Star className="w-3.5 h-3.5 text-blue-400" />
         <span>{hasFeedback ? `Edit Feedback (${myFeedback.rating}★)` : 'Add Feedback'}</span>
       </button>
 
