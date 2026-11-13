@@ -1,0 +1,78 @@
+# ==============================================================================
+# HanginOut Production Profile Configuration (prod)
+# Target: Render / Cloud Deployment with Neon Serverless PostgreSQL
+# ==============================================================================
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /
+  error:
+    include-message: never
+    include-binding-errors: never
+    include-stacktrace: never
+    include-exception: false
+
+spring:
+  # Datasource credentials strictly supplied via environment variables
+  # No fallback or embedded local credentials to prevent accidental misrouting
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: HanginOutProdHikariPool
+      maximum-pool-size: ${HIKARI_MAX_POOL_SIZE:10}
+      minimum-idle: ${HIKARI_MIN_IDLE:2}
+      idle-timeout: 30000
+      max-lifetime: 600000
+      connection-timeout: 30000
+
+  # JPA & Hibernate configuration
+  # SAFETY: 'validate' strictly checks entity mappings against existing tables
+  # It will NEVER drop, alter, or recreate existing database tables
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  # Flyway database migration safety
+  # baseline-on-migrate: true ensures existing databases are not dropped
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    out-of-order: false
+
+# Production Security & JWT Settings
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://hanginout.onrender.com,https://hanginout-frontend.onrender.com,http://localhost:5173,http://localhost:3000}
+  admin:
+    bootstrap:
+      email: ${APP_ADMIN_EMAIL:}
+      password: ${APP_ADMIN_PASSWORD:}
+      name: ${APP_ADMIN_NAME:System Administrator}
+
+# Production Actuator Endpoints (health & info only)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when_authorized

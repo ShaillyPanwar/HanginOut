@@ -35,8 +35,10 @@ WORKDIR /app
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 # Default fallback port if PORT is not set by the host platform (e.g., Render)
+# Production profile active by default in container
 # JVM flags optimized for container environments (respects cgroup memory limits)
 ENV PORT=8080 \
+    SPRING_PROFILES_ACTIVE=prod \
     JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
 
 # Expose fallback application port
