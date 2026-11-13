@@ -64,6 +64,7 @@ public class SecurityConfig {
                                 "/uploads/**"
                         ).permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET,
+                                "/api/health",
                                 "/api/activities",
                                 "/api/activities/categories",
                                 "/api/activities/{id:[0-9]+}",
